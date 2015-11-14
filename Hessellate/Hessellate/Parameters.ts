@@ -12,10 +12,10 @@ namespace Hessellate {
         quasiregular: boolean;
         layers: number; // the number of layers of polygons to display
         skipNumber: number;
-        bgColor: Color;
-        diskColor: Color;
+        bgColor: Color = Color.White;
+        diskColor: Color = Color.MidGrey;
+        lineColor: Color = Color.DarkGrey;
         fill: boolean;
-        outline: boolean;
         grayScale: boolean;
         alternating: boolean; // alternating colors
 

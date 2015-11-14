@@ -1,4 +1,6 @@
-﻿namespace Hessellate {
+﻿/// <reference path="ScreenCoordinateList.ts" />
+
+namespace Hessellate {
     export class Graphics {
         private ctx: CanvasRenderingContext2D;
         width: number;
@@ -12,33 +14,41 @@
             this.height = canvas.height;
             this.x_center = this.width / 2;
             this.y_center = this.height / 2;
+            this.ctx.lineWidth = 0.5;
         }
 
-        public setColor(color: Color) {
-            this.ctx.strokeStyle = "#888";
-            this.ctx.lineWidth = 0.3;
-        }
-
-        public drawPolygon(ix: number[], iy: number[], icount: number) {
+        private path(pointList: ScreenCoordinateList) {
             this.ctx.beginPath();
-            this.ctx.moveTo(ix[0], iy[0]);
-            for (let n = 1; n < icount; n++) {
-                this.ctx.lineTo(ix[n], iy[n]);
+
+            let pl = pointList;
+            this.ctx.moveTo(pl.x, pl.y);
+
+            for (pl = pl.link; pl != null; pl = pl.link) {
+                this.ctx.lineTo(pl.x, pl.y);
             }
+
             this.ctx.closePath();
+        }
+
+        public strokePolygon(pointList: ScreenCoordinateList, color: Color) {
+            this.path(pointList);
+            this.ctx.strokeStyle = color.css;
             this.ctx.stroke();
         }
 
-        public fillPolygon(ix: number[], iy: number[], icount: number) {
+        public fillPolygon(pointList: ScreenCoordinateList, color: Color) {
+            this.path(pointList);
+            this.ctx.fillStyle = color.css;
+            this.ctx.fill();
         }
 
-        public fillRect(x: number, y: number, w: number, h: number) {
-            this.ctx.fillStyle = "#fff";
+        public fillRect(x: number, y: number, w: number, h: number, color: Color) {
+            this.ctx.fillStyle = color.css;
             this.ctx.fillRect(x, y, w, h);
         }
 
-        public fillCircle(x: number, y: number, radius: number) {
-            this.ctx.fillStyle = "#eee";
+        public fillCircle(x: number, y: number, radius: number, color: Color) {
+            this.ctx.fillStyle = color.css;
             this.ctx.beginPath();
             this.ctx.arc(x, y, radius, 0, 2 * Math.PI);
             this.ctx.fill();

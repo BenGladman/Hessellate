@@ -154,7 +154,11 @@ namespace Hessellate {
         }
 
         private randomColor(): Color {
-            return Color.random(this.par.grayScale);
+            if (this.par.grayScale) {
+                return Color.randomGray();
+            } else {
+                return Color.randomColor(30, 60);
+            }
         }
 
         private gcd(m: number, n: number): number {
@@ -178,37 +182,18 @@ namespace Hessellate {
             let x_center = g.x_center;
             let y_center = g.y_center;
             let radius = Math.min(x_center, y_center);
-            g.setColor(this.par.bgColor);
-            g.fillRect(0, 0, g.width, g.height);
-            g.setColor(this.par.diskColor);
-            g.fillCircle(x_center, y_center, radius);
+            g.fillRect(0, 0, g.width, g.height, this.par.bgColor);
+            g.fillCircle(x_center, y_center, radius, this.par.diskColor);
             let stars = this.gcd(this.par.skipNumber, this.par.n);
             let pointsPerStar = this.par.n / stars;
             for (let i = 0; i < this.totalPolygons; ++i) {
-                if (this.par.fill) {
-                    g.setColor(this.C[i]);
-                    for (let s = 0; s < stars; ++s) {
-                        let Q = new Polygon(pointsPerStar);
-                        for (let j = 0; j < pointsPerStar; ++j) {
-                            Q.setVertex(j, this.P[i].getVertex(j * this.par.skipNumber % this.par.n + s));
-                        }
-                        Q.fill(g);
+                for (let s = 0; s < stars; ++s) {
+                    let Q = new Polygon(pointsPerStar);
+                    for (let j = 0; j < pointsPerStar; ++j) {
+                        Q.setVertex(j, this.P[i].getVertex(j * this.par.skipNumber % this.par.n + s));
                     }
-                }
-                if (this.par.outline || !this.par.fill) {
-                    if (this.par.outline) {
-                        g.setColor(Color.black);
-                    } else {
-                        g.setColor(this.C[i]);
-                    }
-
-                    for (let s = 0; s < stars; ++s) {
-                        let Q = new Polygon(pointsPerStar);
-                        for (let j = 0; j < pointsPerStar; ++j) {
-                            Q.setVertex(j, this.P[i].getVertex(j * this.par.skipNumber % this.par.n + s));
-                        }
-                        Q.draw(g);
-                    }
+                    if (this.par.fill) { Q.fill(g, this.C[i]); }
+                    Q.stroke(g, this.par.lineColor);
                 }
             }
         }

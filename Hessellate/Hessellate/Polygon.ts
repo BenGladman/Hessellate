@@ -60,41 +60,23 @@ namespace Hessellate {
             return P;
         }
 
-        // in, ix, and iy are set in setScreenCoordinateArrays
-        private icount: number;  // length of ix and iy
-        private ix: number[];
-        private iy: number[];
-
-        private setScreenCoordinateArrays(g: Graphics): void {
-            // first construct a list of all the points
+        private setScreenCoordinateArrays(g: Graphics): ScreenCoordinateList {
             let pointList: ScreenCoordinateList = null;
             for (let i = 0; i < this.n; ++i) {
-                pointList = (new Line(this.V[i], this.V[(i + 1) % this.n])).appendScreenCoordinates(pointList, g);
+                let line = new Line(this.V[i], this.V[(i + 1) % this.n]);
+                pointList = line.appendScreenCoordinates(pointList, g);
             }
-            // determine its length
-            this.icount = 0;
-            for (let pl = pointList; pl != null; pl = pl.link)
-                this.icount++;
-            this.ix = [];
-            this.iy = [];
-            // now store the coordinates
-            let pl = pointList;
-            for (let i = 0; i < this.icount; i++) {
-                this.ix[i] = pl.x;
-                this.iy[i] = pl.y;
-                pl = pl.link;
-            }
-            // implicitly return in, ix, and iy
+            return pointList;
         }
 
-        public fill(g: Graphics): void {
-            this.setScreenCoordinateArrays(g);
-            g.fillPolygon(this.ix, this.iy, this.icount);
+        public fill(g: Graphics, color: Color): void {
+            let pointList = this.setScreenCoordinateArrays(g);
+            g.fillPolygon(pointList, color);
         }
 
-        public draw(g: Graphics): void {
-            this.setScreenCoordinateArrays(g);
-            g.drawPolygon(this.ix, this.iy, this.icount);
+        public stroke(g: Graphics, color: Color): void {
+            let pointList = this.setScreenCoordinateArrays(g);
+            g.strokePolygon(pointList, color);
         }
 
     }
