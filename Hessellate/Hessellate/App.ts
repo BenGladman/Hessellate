@@ -15,7 +15,26 @@ window.onload = () => {
     //par.grayScale = true;
     //par.alternating = true;
 
-    var d = new Hessellate.Disk(par);
+    let d = new Hessellate.Disk(par);
     d.init();
     d.update(g);
+
+    let dragHandler = function (ev: MouseEvent) {
+        if (ev.which === 0) {
+            c.removeEventListener("mousemove", dragHandler);
+            return;
+        }
+
+        let tx = (2 * ev.offsetX / c.width) - 1;
+        let ty = (2 * ev.offsetY / c.height) - 1;
+        if (Math.sqrt(tx * tx + ty * ty) <= 1) {
+            par.translateX = tx;
+            par.translateY = ty;
+            d.update(g);
+        }
+    }
+
+    c.addEventListener("mousedown", (ev) => {
+        c.addEventListener("mousemove", dragHandler);
+    });
 };

@@ -30,7 +30,6 @@
     <TypeScriptCompile Include="Hessellate\App.ts" />
     <TypeScriptCompile Include="Hessellate\CircularCurve.ts" />
     <TypeScriptCompile Include="Hessellate\Color.ts" />
-    <TypeScriptCompile Include="Hessellate\Complex.ts" />
     <TypeScriptCompile Include="Hessellate\Curve.ts" />
     <TypeScriptCompile Include="Hessellate\Disk.ts" />
     <TypeScriptCompile Include="Hessellate\Graphics.ts" />

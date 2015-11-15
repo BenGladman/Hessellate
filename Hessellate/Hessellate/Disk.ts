@@ -161,8 +161,10 @@ namespace Hessellate {
             }
         }
 
+        /**
+         * Greatest common divisor
+         */
         private gcd(m: number, n: number): number {
-            // greatest common divisor
             if (m < 0) m = -m;   // Make sure m and n
             if (n < 0) n = -n;   // are nonnegative.
             if (m > n) {         // Make sure m <= n. }
@@ -190,7 +192,9 @@ namespace Hessellate {
                 for (let s = 0; s < stars; ++s) {
                     let Q = new Polygon(pointsPerStar);
                     for (let j = 0; j < pointsPerStar; ++j) {
-                        Q.setVertex(j, this.P[i].getVertex(j * this.par.skipNumber % this.par.n + s));
+                        let p = this.P[i].getVertex(j * this.par.skipNumber % this.par.n + s);
+                        p = p.translate(this.par.translateX, this.par.translateY);
+                        Q.setVertex(j, p);
                     }
                     if (this.par.fill) { Q.fill(g, this.C[i]); }
                     Q.stroke(g, this.par.lineColor);

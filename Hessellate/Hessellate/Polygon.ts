@@ -54,8 +54,9 @@ namespace Hessellate {
             // They're all at distance s from the center of the Poincare disk.
             let P = new Polygon(n);
             for (let i = 0; i < n; ++i) {
-                P.V[i] = new Point(s * Math.cos((3 + 2 * i) * angleA),
+                let point = new Point(s * Math.cos((3 + 2 * i) * angleA),
                     s * Math.sin((3 + 2 * i) * angleA));
+                P.V[i] = point;
             }
             return P;
         }

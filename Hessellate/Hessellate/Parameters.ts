@@ -18,6 +18,8 @@ namespace Hessellate {
         fill: boolean;
         grayScale: boolean;
         alternating: boolean; // alternating colors
+        translateX: number = 0;
+        translateY: number = 0;
 
         public checkPars(): void {
             // n should be between 3 and 20
