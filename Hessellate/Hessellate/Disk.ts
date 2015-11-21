@@ -190,14 +190,25 @@ namespace Hessellate {
             let pointsPerStar = this.par.n / stars;
             for (let i = 0; i < this.totalPolygons; ++i) {
                 for (let s = 0; s < stars; ++s) {
+                    let drawit = true;
                     let Q = new Polygon(pointsPerStar);
-                    for (let j = 0; j < pointsPerStar; ++j) {
+                    for (let j = 0; j < pointsPerStar && drawit; ++j) {
                         let p = this.P[i].getVertex(j * this.par.skipNumber % this.par.n + s);
-                        p = p.translate(this.par.translateX, this.par.translateY);
+                        p = p.moebius(this.par.moebiusZ0, this.par.moebiusT);
+                        if (p.norm() > this.par.detailLevel) {
+                            drawit = false;
+                            break;
+                        }
                         Q.setVertex(j, p);
                     }
-                    if (this.par.fill) { Q.fill(g, this.C[i]); }
-                    Q.stroke(g, this.par.lineColor);
+                    if (drawit) {
+                        let c = this.C[i];
+                        if (i === 0 && this.par.highlightCenter) {
+                            c = this.par.highlightPolygonColor;
+                        }
+                        if (this.par.fill) { Q.fill(g, c); }
+                        Q.stroke(g, this.par.lineColor);
+                    }
                 }
             }
         }

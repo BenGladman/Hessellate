@@ -1,4 +1,5 @@
 ﻿/// <reference path="Color.ts" />
+/// <reference path="Point.ts" />
 
 namespace Hessellate {
     /**
@@ -11,15 +12,18 @@ namespace Hessellate {
         k: number; // vertex valence, the number of polygons that meet at each vertex
         quasiregular: boolean;
         layers: number; // the number of layers of polygons to display
+        detailLevel: number = 0.995;
         skipNumber: number;
         bgColor: Color = Color.White;
         diskColor: Color = Color.MidGrey;
         lineColor: Color = Color.DarkGrey;
+        highlightPolygonColor: Color = Color.White;
         fill: boolean;
         grayScale: boolean;
         alternating: boolean; // alternating colors
-        translateX: number = 0;
-        translateY: number = 0;
+        moebiusZ0: Point = Point.origin;
+        moebiusT: number = 0;
+        highlightCenter: boolean = false;
 
         public checkPars(): void {
             // n should be between 3 and 20

@@ -20,6 +20,15 @@
         }
 
         /**
+         * Create a point from polar coordinates.
+         * @param r Magintude
+         * @param t Argument (angle)
+         */
+        static fromPolar(r: number, t: number) {
+            return new Point(r * Math.cos(t), r * Math.sin(t))
+        }
+
+        /**
          * Reflect the point A through this point B to get the returned point C.
          * The rule for computing A thru B (as Point numbers) is:		|
          *
@@ -79,12 +88,19 @@
             return Math.sqrt(this.x * this.x + this.y * this.y);
         }
 
+        /**
+         * Argument of point (angle from X axis)
+         */
+        public arg(): number {
+           return  Math.atan2(this.y, this.x);
+        }
+
         public conjugate(): Point {
             return new Point(this.x, -this.y);
         }
 
-        public negation(): Point {
-            return new Point(-this.x, this.y);
+        public negate(): Point {
+            return new Point(-this.x, -this.y);
         }
 
         public minus(w: Point | number): Point {
