@@ -37,7 +37,7 @@
          *           t -  A B'                conjugate of B
          */
         public reflect(A: Point): Point {
-            let t = (1.0 + this.normSquared()) / 2.0;
+            let t = (1 + this.normSquared()) / 2;
             // compute the numerator as  B - t * A
             let numerator = this.minus(A.times(t));
             // compute the denominator as  t - A * B'
@@ -50,11 +50,9 @@
          * http://archive.ncsa.illinois.edu/Classes/MATH198/whubbard/GRUMC/geometryExplorer/help/noneuclid/examples-moebius.html
          */
         public moebius(z0: Point, t: number): Point {
-            // e ^ it = cos(t) + i sin(t)
-            let eit = new Point(Math.cos(t), Math.sin(t));
-            let numerator = this.minus(z0);
+            let numerator = Point.fromPolar(1, t).times(this.minus(z0));
             let denominator = Point.subtract(1, this.times(z0.conjugate()));
-            return eit.times(numerator).over(denominator);
+            return numerator.over(denominator);
         }
 
         public translate(translateX: number, translateY: number): Point {
@@ -92,7 +90,7 @@
          * Argument of point (angle from X axis)
          */
         public arg(): number {
-           return  Math.atan2(this.y, this.x);
+            return Math.atan2(this.y, this.x);
         }
 
         public conjugate(): Point {
@@ -113,18 +111,8 @@
             }
         }
 
-        public static subtract(z: Point | number, w: Point | number): Point {
-            if (z instanceof Point && w instanceof Point) {
-                return new Point(z.x - w.x, z.y - w.y);
-            } else if (typeof z === "number" && w instanceof Point) {
-                return new Point(z - w.x, -w.y);
-            } else if (z instanceof Point && typeof w === "number") {
-                return new Point(z.x - w, z.y);
-            } else if (typeof z === "number" && typeof w === "number") {
-                return new Point(z - w, 0);
-            } else {
-                return Point.origin;
-            }
+        public static subtract(t: number, w: Point): Point {
+            return new Point(t - w.x, -w.y);
         }
 
         public plus(w: Point | number): Point {
@@ -137,18 +125,8 @@
             }
         }
 
-        public static add(z: Point | number, w: Point | number): Point {
-            if (z instanceof Point && w instanceof Point) {
-                return new Point(z.x + w.x, z.y + w.y);
-            } else if (typeof z === "number" && w instanceof Point) {
-                return new Point(z + w.x, w.y);
-            } else if (z instanceof Point && typeof w === "number") {
-                return new Point(z.x + w, z.y);
-            } else if (typeof z === "number" && typeof w === "number") {
-                return new Point(z + w, 0);
-            } else {
-                return Point.origin;
-            }
+        public static add(t: number, w: Point): Point {
+            return new Point(t + w.x, w.y);
         }
 
         public times(w: Point | number): Point {
@@ -161,18 +139,8 @@
             }
         }
 
-        public static multiply(z: Point | number, w: Point | number): Point {
-            if (z instanceof Point && w instanceof Point) {
-                return new Point(z.x * w.x - z.y * w.y, z.y * w.x + z.x * w.y);
-            } else if (typeof z === "number" && w instanceof Point) {
-                return new Point(z * w.x, z * w.y);
-            } else if (z instanceof Point && typeof w === "number") {
-                return new Point(w * z.x, w * z.y);
-            } else if (typeof z === "number" && typeof w === "number") {
-                return new Point(z * w, 0);
-            } else {
-                return Point.origin;
-            }
+        public static multiply(t: number, w: Point): Point {
+            return new Point(t * w.x, t * w.y);
         }
 
         public reciprocal(): Point {
@@ -186,23 +154,14 @@
                 return new Point((this.x * w.x + this.y * w.y) / den, (this.y * w.x - this.x * w.y) / den);
             } else if (typeof w === "number") {
                 return new Point(this.x / w, this.y / w);
-            }
-        }
-
-        public static divide(z: Point | number, w: Point | number): Point {
-            if (z instanceof Point && w instanceof Point) {
-                let den = w.normSquared();
-                return new Point((z.x * w.x + z.y * w.y) / den, (z.y * w.x - z.x * w.y) / den);
-            } else if (typeof z === "number" && w instanceof Point) {
-                let den = w.normSquared();
-                return new Point(z * w.x / den, -z * w.y / den);
-            } else if (z instanceof Point && typeof w === "number") {
-                return new Point(z.x / w, z.y / w);
-            } else if (typeof z === "number" && typeof w === "number") {
-                return new Point(z / w, 0);
             } else {
                 return Point.origin;
             }
+        }
+
+        public static divide(t: number, w: Point): Point {
+            let den = w.normSquared();
+            return new Point(t * w.x / den, -t * w.y / den);
         }
     }
 }
