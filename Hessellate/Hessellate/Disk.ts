@@ -136,21 +136,14 @@ namespace Hessellate {
          * to produce the resulting polygon Q
          */
         private createNextPolygon(P: Polygon, s: number): Polygon {
-            let Q = new Polygon(this.par.n);
             if (this.par.quasiregular) {
                 let V = P.getVertex(s);
-                for (let i = 0; i < this.par.n; ++i) { // reflect P[i] thru P[s] to get Q[j]
-                    let j = (this.par.n + i - s) % this.par.n;
-                    Q.setVertex(j, V.reflect(P.getVertex(i)));
-                }
-            } else { // regular
+                return P.reflect(V, this.par.n - s);
+            } else {
+                // regular
                 let C = new Line(P.getVertex(s), P.getVertex((s + 1) % this.par.n));
-                for (let i = 0; i < this.par.n; ++i) { // reflect P[i] thru C to get Q[j]}
-                    let j = (this.par.n + s - i + 1) % this.par.n;
-                    Q.setVertex(j, C.reflect(P.getVertex(i)));
-                }
+                return P.reflect(C, this.par.n + s + 1, true);
             }
-            return Q;
         }
 
         private randomColor(): Color {
@@ -161,56 +154,24 @@ namespace Hessellate {
             }
         }
 
-        /**
-         * Greatest common divisor
-         */
-        private gcd(m: number, n: number): number {
-            if (m < 0) m = -m;   // Make sure m and n
-            if (n < 0) n = -n;   // are nonnegative.
-            if (m > n) {         // Make sure m <= n. }
-                let temp = n;
-                n = m;
-                m = temp;
-            }
-            while (m != 0) {
-                let temp = n;
-                n = m;
-                m = temp % m;
-            }
-            return n;
-        }
-
         public update(g: Graphics): void {
             let x_center = g.x_center;
             let y_center = g.y_center;
             let radius = Math.min(x_center, y_center);
             g.fillRect(0, 0, g.width, g.height, this.par.bgColor);
             g.fillCircle(x_center, y_center, radius, this.par.diskColor);
-            let stars = this.gcd(this.par.skipNumber, this.par.n);
-            let pointsPerStar = this.par.n / stars;
-            for (let i = 0; i < this.totalPolygons; ++i) {
-                for (let s = 0; s < stars; ++s) {
-                    let drawit = true;
-                    let Q = new Polygon(pointsPerStar);
-                    for (let j = 0; j < pointsPerStar && drawit; ++j) {
-                        let p = this.P[i].getVertex(j * this.par.skipNumber % this.par.n + s);
-                        p = p.moebius(this.par.moebiusZ0, this.par.moebiusT);
-                        if (p.norm() > this.par.detailLevel) {
-                            drawit = false;
-                            break;
-                        }
-                        Q.setVertex(j, p);
+
+            this.P.forEach((polygon, i) => {
+                let polygon2 = polygon.moebius(this.par.moebiusZ0, this.par.moebiusT, this.par.detailLevel);
+                if (polygon2) {
+                    let c = this.C[i];
+                    if (i === 0 && this.par.highlightCenter) {
+                        c = this.par.highlightPolygonColor;
                     }
-                    if (drawit) {
-                        let c = this.C[i];
-                        if (i === 0 && this.par.highlightCenter) {
-                            c = this.par.highlightPolygonColor;
-                        }
-                        if (this.par.fill) { Q.fill(g, c); }
-                        Q.stroke(g, this.par.lineColor);
-                    }
+                    if (this.par.fill) { polygon2.fill(g, c); }
+                    polygon2.stroke(g, this.par.lineColor);
                 }
-            }
+            });
         }
     }
 }

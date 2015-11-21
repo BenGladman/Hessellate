@@ -13,7 +13,6 @@ namespace Hessellate {
         quasiregular: boolean;
         layers: number; // the number of layers of polygons to display
         detailLevel: number = 0.995;
-        skipNumber: number;
         bgColor: Color = Color.White;
         diskColor: Color = Color.MidGrey;
         lineColor: Color = Color.DarkGrey;
@@ -37,11 +36,6 @@ namespace Hessellate {
             else { this.k = Math.max(this.k, 3); }
 
             this.k = Math.min(this.k, 20);
-    
-            // skipNumber should be between 1 and n/2
-            if (this.skipNumber * 2 >= this.n) {
-                this.skipNumber = 1;
-            }
     
             // layers shouldn't be too big
             if (this.n == 3 || this.k == 3) {

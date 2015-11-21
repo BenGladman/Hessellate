@@ -51,19 +51,18 @@ namespace Hessellate {
             return `[${this.A},${this.B}]`;
         }
 
-        // Reflect the point R thru the this line to get Q the returned point}
+        /**
+         * Reflect the point R thru the this line to get the returned point
+         */
         public reflect(R: Point): Point {
-            let Q = new Point();
             if (this.isStraight) {
                 let factor = 2.0 * ((R.x - this.P.x) * this.D.x + (R.y - this.P.y) * this.D.y);
-                Q.x = 2.0 * this.P.x + factor * this.D.x - R.x;
-                Q.y = 2.0 * this.P.y + factor * this.D.y - R.y;
-            } else {  // it's a circle
+                return this.P.times(2).plus(this.D.times(factor).minus(R));
+            } else {
+                // it's a circle
                 let factor = this.r * this.r / ((R.x - this.C.x) * (R.x - this.C.x) + (R.y - this.C.y) * (R.y - this.C.y));
-                Q.x = this.C.x + factor * (R.x - this.C.x);
-                Q.y = this.C.y + factor * (R.y - this.C.y);
+                return this.C.plus(R.minus(this.C).times(factor));
             }
-            return Q;
         }
 
         // append screen coordinates to the list in order to draw the line

@@ -9,9 +9,8 @@ window.onload = () => {
     let par = new Hessellate.Parameters();
     par.n = 4;
     par.k = 5;
-    par.quasiregular = false;
-    par.layers = 3;
-    par.skipNumber = 1;
+    par.quasiregular = true;
+    par.layers = 4;
     par.fill = true;
     //par.grayScale = true;
     //par.alternating = true;
