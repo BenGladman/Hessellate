@@ -16,7 +16,7 @@ namespace Hessellate {
         bgColor: Color = Color.White;
         diskColor: Color = Color.MidGrey;
         lineColor: Color = Color.DarkGrey;
-        highlightPolygonColor: Color = Color.White;
+        highlightTileColor: Color = Color.White;
         fill: boolean;
         grayScale: boolean;
         alternating: boolean; // alternating colors

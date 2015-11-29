@@ -9,19 +9,22 @@ namespace Hessellate {
      */
     export class Polygon {
 
-        private n: number;  // the number of sides
-        private vertices: Point[]; // the list of vertices
-        private innerPolygons: Polygon[];
+        /**
+         * The number of sides.
+         */
+        private n: number;
 
-        constructor(n: number = 0) {
-            this.n = n;
-            this.vertices = [];
-            this.innerPolygons = [];
+        /**
+         * The list of vertices
+         */
+        private vertices: Point[];
+
+        constructor(vertices: Point[]) {
+            this.n = vertices.length;
+            this.vertices = vertices;
         }
 
         public getVertex(i: number): Point { return this.vertices[i]; }
-
-        public setVertex(i: number, P: Point): void { this.vertices[i] = P; }
 
         public toString(): string {
             let S = "[";
@@ -40,12 +43,11 @@ namespace Hessellate {
          * @param reverseDirection If true then the order of the vertices in the returned polygon will be the reverse order of this. 
          */
         public reflect(V: Point | Line, firstVertex: number, reverseDirection = false) {
-
-            let Q = new Polygon(this.n);
+            let vertices: Point[] = [];
             let j = firstVertex % this.n;
 
             this.vertices.forEach((vertex) => {
-                Q.setVertex(j, V.reflect(vertex));
+                vertices[j] = V.reflect(vertex);
                 if (reverseDirection) {
                     j -= 1;
                     if (j === -1) { j = this.n - 1; }
@@ -56,17 +58,14 @@ namespace Hessellate {
 
             });
 
-            Q.innerPolygons = this.innerPolygons
-                .map((polygon) => polygon.reflect(V, firstVertex, reverseDirection));
-
-            return Q;
+            return new Polygon(vertices);
         }
 
         /**
          * Moebius transform
          */
         public moebius(z0: Point, t: number, detailLevel = 0): Polygon {
-            let Q = new Polygon(this.n);
+            let vertices: Point[] = [];
             let toosmall = false;
 
             this.vertices.forEach((vertex) => {
@@ -74,53 +73,12 @@ namespace Hessellate {
                 let vt = vertex.moebius(z0, t);
                 toosmall = (detailLevel > 0) && (vt.norm() > detailLevel);
                 if (toosmall) { return; }
-                Q.vertices.push(vt);
+                vertices.push(vt);
             });
 
             if (toosmall) { return null; }
 
-            Q.innerPolygons = this.innerPolygons
-                .map((polygon) => polygon.moebius(z0, t));
-
-            return Q;
-        }
-
-        public static constructCenterPolygon(n: number, k: number, quasiregular: boolean): Polygon {
-            // Initialize P as the center polygon in an n-k regular or quasiregular tiling.
-            // Let ABC be a triangle in a regular (n,k0-tiling, where
-            //    A is the center of an n-gon (also center of the disk),
-            //    B is a vertex of the n-gon, and
-            //    C is the midpoint of a side of the n-gon adjacent to B.
-            let angleA = Math.PI / n;
-            let angleB = Math.PI / k;
-            let angleC = Math.PI / 2.0;
-            // For a regular tiling, we need to compute the distance s from A to B.
-            let sinA = Math.sin(angleA);
-            let sinB = Math.sin(angleB);
-            let s = Math.sin(angleC - angleB - angleA)
-                / Math.sqrt(1.0 - sinB * sinB - sinA * sinA);
-            // But for a quasiregular tiling, we need the distance s from A to C.
-            if (quasiregular) {
-                s = (s * s + 1.0) / (2.0 * s * Math.cos(angleA));
-                s = s - Math.sqrt(s * s - 1.0);
-            }
-            // Now determine the coordinates of the n vertices of the n-gon.
-            // They're all at distance s from the center of the Poincare disk.
-            let P = new Polygon(n);
-            for (let i = 0; i < n; ++i) {
-                let point = new Point(s * Math.cos((3 + 2 * i) * angleA),
-                    s * Math.sin((3 + 2 * i) * angleA));
-                P.vertices[i] = point;
-            }
-
-            let innerPolygon = new Polygon(4);
-            innerPolygon.setVertex(0, new Point(0.15, 0.15));
-            innerPolygon.setVertex(1, new Point(-0.15, 0.15));
-            innerPolygon.setVertex(2, new Point(-0.15, -0.15));
-            innerPolygon.setVertex(3, new Point(0.15, -0.15));
-            P.innerPolygons.push(innerPolygon);
-
-            return P;
+            return new Polygon(vertices);
         }
 
         private setScreenCoordinateArrays(g: Graphics): ScreenCoordinateList {
@@ -133,15 +91,8 @@ namespace Hessellate {
         }
 
         public fill(g: Graphics, color: Color): void {
-            if (this.innerPolygons.length === 0) {
-                let pointList = this.setScreenCoordinateArrays(g);
-                g.fillPolygon(pointList, color);
-            } else {
-                this.innerPolygons.forEach((polygon) => {
-                    let pointList = polygon.setScreenCoordinateArrays(g);
-                    g.fillPolygon(pointList, color);
-                });
-            }
+            let pointList = this.setScreenCoordinateArrays(g);
+            g.fillPolygon(pointList, color);
         }
 
         public stroke(g: Graphics, color: Color): void {

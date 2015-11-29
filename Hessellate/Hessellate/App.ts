@@ -7,9 +7,9 @@ window.onload = () => {
     let c = document.getElementById("canvas") as HTMLCanvasElement;
     let g = new Hessellate.Graphics(c);
     let par = new Hessellate.Parameters();
-    par.n = 4;
-    par.k = 5;
-    par.quasiregular = true;
+    par.n = 6;
+    par.k = 4;
+    //par.quasiregular = true;
     par.layers = 4;
     par.fill = true;
     //par.grayScale = true;

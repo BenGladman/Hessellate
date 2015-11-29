@@ -38,6 +38,7 @@
     <TypeScriptCompile Include="Hessellate\Point.ts" />
     <TypeScriptCompile Include="Hessellate\Polygon.ts" />
     <TypeScriptCompile Include="Hessellate\ScreenCoordinateList.ts" />
+    <TypeScriptCompile Include="Hessellate\Tile.ts" />
   </ItemGroup>
   <ItemGroup>
     <None Include="web.Debug.config">
