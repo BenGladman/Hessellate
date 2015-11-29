@@ -64,19 +64,13 @@ namespace Hessellate {
         /**
          * Moebius transform
          */
-        public moebius(z0: Point, t: number, detailLevel = 0): Polygon {
+        public moebius(z0: Point, t: number): Polygon {
             let vertices: Point[] = [];
-            let toosmall = false;
 
             this.vertices.forEach((vertex) => {
-                if (toosmall) { return; }
                 let vt = vertex.moebius(z0, t);
-                toosmall = (detailLevel > 0) && (vt.norm() > detailLevel);
-                if (toosmall) { return; }
                 vertices.push(vt);
             });
-
-            if (toosmall) { return null; }
 
             return new Polygon(vertices);
         }

@@ -12,7 +12,7 @@ namespace Hessellate {
         k: number; // vertex valence, the number of polygons that meet at each vertex
         quasiregular: boolean;
         layers: number; // the number of layers of polygons to display
-        detailLevel: number = 0.995;
+        detailLevel: number = 0.99;
         bgColor: Color = Color.White;
         diskColor: Color = Color.MidGrey;
         lineColor: Color = Color.DarkGrey;

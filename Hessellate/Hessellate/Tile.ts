@@ -23,10 +23,18 @@ namespace Hessellate {
             return new Tile(rcenter, rmain, rinner);
         }
 
+        /**
+         * Moebius transform.
+         * @param z0
+         * @param t
+         * @param detailLevel If > 0, then null will be returned if the center of the tile is further away.
+         */
         public moebius(z0: Point, t: number, detailLevel = 0): Tile {
             let mcenter = this.center.moebius(z0, t);
-            let mmain = this.mainPolygon.moebius(z0, t, detailLevel);
-            let minner = this.innerPolygons.map((polygon) => polygon.moebius(z0, t, detailLevel));
+            if ((detailLevel > 0) && (mcenter.norm() > detailLevel)) { return null; }
+
+            let mmain = this.mainPolygon.moebius(z0, t);
+            let minner = this.innerPolygons.map((polygon) => polygon.moebius(z0, t));
             return new Tile(mcenter, mmain, minner);
         }
 
@@ -74,14 +82,17 @@ namespace Hessellate {
             }
             let mainPolygon = new Polygon(vertices);
 
-            let innerPolygon = new Polygon([
-                new Point(0.5, 0.15),
-                new Point(0.2, 0.15),
-                new Point(0.2, -0.15),
-                new Point(0.5, -0.15)
-            ]);
+            let innerPolygons: Polygon[] = [];
+            for (let i = 0; i < n - 1; i += 2) {
+                innerPolygons.push(new Polygon([
+                    vertices[i],
+                    vertices[i + 1],
+                    Point.fromPolar(0.2, vertices[i + 1].arg()),
+                    Point.fromPolar(0.2, vertices[i].arg())
+                ]));
+            }
 
-            return new Tile(Point.origin, mainPolygon, [innerPolygon]);
+            return new Tile(Point.origin, mainPolygon, innerPolygons);
         }
     }
 }
