@@ -28,8 +28,6 @@ namespace Hessellate {
          */
         private par: Parameters;
 
-        private alternating: boolean;
-
         /**
          * The list of tiles.
          */
@@ -56,11 +54,11 @@ namespace Hessellate {
         private C: Color[];
 
         constructor(par: Parameters) {
+            par.checkPars();
             this.par = par;
         }
 
         public init(): void {
-            this.alternating = this.par.alternating && (this.par.k % 2 == 0);
             this.countTiles(this.par.layers);
             this.determineTiles();
         }
@@ -109,7 +107,7 @@ namespace Hessellate {
             this.P = [];
             this.rule = [];
             this.C = [];
-            this.P[0] = Tile.constructCenterTile(this.par.n, this.par.k, this.par.quasiregular);
+            this.P[0] = this.constructCenterTile();
             this.rule[0] = 0;
             this.C[0] = this.randomColor();
             let j = 1; // index of the next tile to create
@@ -128,7 +126,7 @@ namespace Hessellate {
                 // Create a tile adjacent to P[i]
                 this.P[j] = this.createNextTile(this.P[i], s % this.par.n);
                 this.rule[j] = (this.par.k == 3 && s == start && r != 0) ? 4 : 3;
-                if (this.alternating && j > 1) {
+                if (this.par.alternating && j > 1) {
                     this.C[j] = (this.C[i] == this.C[0]) ? this.C[1] : this.C[0];
                 } else {
                     this.C[j] = this.randomColor();
@@ -143,7 +141,7 @@ namespace Hessellate {
                     // Create a tile adjacent to P[j-1]
                     this.P[j] = this.createNextTile(this.P[j - 1], 1);
                     this.rule[j] = (this.par.n == 3 && m == this.par.k - 4) ? 1 : 2;
-                    if (this.alternating) {
+                    if (this.par.alternating) {
                         this.C[j] = (this.C[j - 1] == this.C[0]) ? this.C[1] : this.C[0];
                     } else {
                         this.C[j] = this.randomColor();
@@ -154,17 +152,61 @@ namespace Hessellate {
             return j;
         }
   
+        public constructCenterTile(): Tile {
+            // Initialize P as the center polygon in an n-k regular or quasiregular tiling.
+            // Let ABC be a triangle in a regular (n,k0-tiling, where
+            //    A is the center of an n-gon (also center of the disk),
+            //    B is a vertex of the n-gon, and
+            //    C is the midpoint of a side of the n-gon adjacent to B.
+            let angleA = Math.PI / this.par.n;
+            let angleB = Math.PI / this.par.k;
+            let angleC = Math.PI / 2.0;
+            // For a regular tiling, we need to compute the distance s from A to B.
+            let sinA = Math.sin(angleA);
+            let sinB = Math.sin(angleB);
+            let s = Math.sin(angleC - angleB - angleA)
+                / Math.sqrt(1.0 - sinB * sinB - sinA * sinA);
+            // But for a quasiregular tiling, we need the distance s from A to C.
+            if (this.par.quasiregular) {
+                s = (s * s + 1.0) / (2.0 * s * Math.cos(angleA));
+                s = s - Math.sqrt(s * s - 1.0);
+            }
+
+            // Now determine the coordinates of the n vertices of the n-gon.
+            // They're all at distance s from the center of the Poincare disk.
+            let vertices: Point[] = [];
+            for (let i = 0; i < this.par.n; ++i) {
+                let point = new Point(s * Math.cos((3 + 2 * i) * angleA),
+                    s * Math.sin((3 + 2 * i) * angleA));
+                vertices.push(point);
+            }
+            let mainPolygon = new Polygon(vertices);
+
+            let innerPolygons: Polygon[] = [];
+            for (let i = 0; i < this.par.n - 1; i += 2) {
+                innerPolygons.push(new Polygon([
+                    vertices[i],
+                    vertices[i + 1],
+                    Point.fromPolar(0.2, vertices[i + 1].arg()),
+                    Point.fromPolar(0.2, vertices[i].arg())
+                ]));
+            }
+
+            return new Tile(Point.origin, mainPolygon, innerPolygons);
+        }
+
         /**
          * Reflect P thru the point or the side indicated by the side s.
          */
         private createNextTile(tile: Tile, s: number): Tile {
+            let rotateAngle = Math.PI * 2 * this.par.rotateTile / this.par.n;
             if (this.par.quasiregular) {
                 let V = tile.getVertex(s);
-                return tile.reflect(V, this.par.n - s);
+                return tile.rotateInnerPolygons(rotateAngle).reflect(V, this.par.n - s);
             } else {
                 // regular
                 let C = new Line(tile.getVertex(s), tile.getVertex((s + 1) % this.par.n));
-                return tile.reflect(C, this.par.n + s + 1, true);
+                return tile.rotateInnerPolygons(rotateAngle).reflect(C, this.par.n + s + 1, true);
             }
         }
 

@@ -7,22 +7,59 @@ namespace Hessellate {
      * From http://aleph0.clarku.edu/~djoyce/poincare/PoincareB.html
      */
     export class Parameters {
+        /**
+         * The number of sides on a polygon.
+         */
+        n: number;
 
-        n: number; // the number of sides on a polygon
-        k: number; // vertex valence, the number of polygons that meet at each vertex
+        /**
+         * Vertex valence, the number of polygons that meet at each vertex.
+         */
+        k: number;
+
         quasiregular: boolean;
-        layers: number; // the number of layers of polygons to display
+
+        /**
+         * The number of layers of polygons to display.
+         */
+        layers: number;
+
+        /**
+         * Smallest tile to render (closer to 1 is smaller).
+         */
         detailLevel: number = 0.99;
+
         bgColor: Color = Color.White;
         diskColor: Color = Color.MidGrey;
         lineColor: Color = Color.DarkGrey;
         highlightTileColor: Color = Color.White;
         fill: boolean;
         grayScale: boolean;
-        alternating: boolean; // alternating colors
+
+        /**
+         * Alternating colors
+         */
+        alternating: boolean;
+
+        /**
+         * Z0 argument in moebius transform.
+         */
         moebiusZ0: Point = Point.origin;
+
+        /**
+         * t argument in moebius transform.
+         */
         moebiusT: number = 0;
+
+        /**
+         * Whether to highlight the center tile.
+         */
         highlightCenter: boolean = false;
+
+        /**
+         * Number of sides to rotate adjacent tiles.
+         */
+        rotateTile: number = 0;
 
         public checkPars(): void {
             // n should be between 3 and 20
@@ -43,6 +80,8 @@ namespace Hessellate {
             } else {
                 this.layers = Math.min(this.layers, 4);
             }
+
+            this.alternating = this.alternating && (this.k % 2 == 0);
         }
 
         public toString(): string {
