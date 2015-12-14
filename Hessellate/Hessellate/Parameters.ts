@@ -10,19 +10,19 @@ namespace Hessellate {
         /**
          * The number of sides on a polygon.
          */
-        n: number;
+        n: number = 5;
 
         /**
          * Vertex valence, the number of polygons that meet at each vertex.
          */
-        k: number;
+        k: number = 4;
 
         quasiregular: boolean;
 
         /**
          * The number of layers of polygons to display.
          */
-        layers: number;
+        layers: number = 3;
 
         /**
          * Smallest tile to render (closer to 1 is smaller).
@@ -33,7 +33,7 @@ namespace Hessellate {
         diskColor: Color = Color.MidGrey;
         lineColor: Color = Color.DarkGrey;
         highlightTileColor: Color = Color.White;
-        fill: boolean;
+        fill: boolean = true;
         grayScale: boolean;
 
         /**

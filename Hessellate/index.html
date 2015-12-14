@@ -10,6 +10,35 @@
 <body>
     <h1>Hessellate</h1>
     <h2>Hyperbolic Tessellations on the Poincaré Disk</h2>
-    <canvas id="canvas" height="800" width="800"></canvas>
+    <canvas id="canvas" class="h-canvas" height="500" width="500"></canvas>
+    <fieldset id="controls" class="h-controls">
+        <fieldset class="h-radio-group">
+            <label class="h-field-label">Sides per polygon: </label>
+            <label class="h-radio-label"><input type="radio" name="control-n" value="3" />3</label>
+            <label class="h-radio-label"><input type="radio" name="control-n" value="4" />4</label>
+            <label class="h-radio-label"><input type="radio" name="control-n" value="5" />5</label>
+            <label class="h-radio-label"><input type="radio" name="control-n" value="6" />6</label>
+            <label class="h-radio-label"><input type="radio" name="control-n" value="7" />7</label>
+            <label class="h-radio-label"><input type="radio" name="control-n" value="8" />8</label>
+        </fieldset>
+        <fieldset class="h-radio-group">
+            <label class="h-field-label">Polygons per vertex: </label>
+            <label class="h-radio-label"><input type="radio" name="control-k" value="3" />3</label>
+            <label class="h-radio-label"><input type="radio" name="control-k" value="4" />4</label>
+            <label class="h-radio-label"><input type="radio" name="control-k" value="5" />5</label>
+            <label class="h-radio-label"><input type="radio" name="control-k" value="6" />6</label>
+            <label class="h-radio-label"><input type="radio" name="control-k" value="7" />7</label>
+            <label class="h-radio-label"><input type="radio" name="control-k" value="8" />8</label>
+        </fieldset>
+        <label class="h-checkbox-label"><input type="checkbox" name="control-quasiregular" />Quasiregular</label>
+        <label class="h-checkbox-label"><input type="checkbox" name="control-alternating" />Alternating Colors</label>
+        <fieldset class="h-radio-group">
+            <label class="h-field-label">Rotate adjacent tiles: </label>
+            <label class="h-radio-label"><input type="radio" name="control-rotatetile" value="0" />No</label>
+            <label class="h-radio-label"><input type="radio" name="control-rotatetile" value="1" />1 Side</label>
+            <label class="h-radio-label"><input type="radio" name="control-rotatetile" value="2" />2 Sides</label>
+            <label class="h-radio-label"><input type="radio" name="control-rotatetile" value="3" />3 Sides</label>
+        </fieldset>
+    </fieldset>
 </body>
 </html>

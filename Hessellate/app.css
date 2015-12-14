@@ -2,6 +2,29 @@
     font-family: 'Segoe UI', sans-serif;
 }
 
-span {
-    font-style: italic;
+.h-canvas {
+}
+
+.h-field-label {
+    display: inline-block;
+    width: 12em;
+}
+
+.h-controls {
+    border: none;
+    font-size: 20px;
+    padding: 0;
+}
+
+.h-radio-group {
+    border: none;
+    padding: 0;
+}
+
+.h-checkbox-label {
+    display: block;
+}
+
+.h-checkbox-label > input {
+    margin-right: 10px;
 }
