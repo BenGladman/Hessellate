@@ -39,6 +39,8 @@
     <TypeScriptCompile Include="Hessellate\Polygon.ts" />
     <TypeScriptCompile Include="Hessellate\ScreenCoordinateList.ts" />
     <TypeScriptCompile Include="Hessellate\Tile.ts" />
+    <TypeScriptCompile Include="Hessellate\UI.Canvas.ts" />
+    <TypeScriptCompile Include="Hessellate\UI.Controls.ts" />
   </ItemGroup>
   <ItemGroup>
     <None Include="web.Debug.config">

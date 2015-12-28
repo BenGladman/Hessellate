@@ -53,12 +53,18 @@ namespace Hessellate {
          */
         private C: Color[];
 
-        constructor(par: Parameters) {
-            par.checkPars();
+        /**
+         * Graphics object for drawing.
+         */
+        private g: Graphics;
+
+        constructor(par: Parameters, g: Graphics) {
             this.par = par;
+            this.g = g;
         }
 
         public init(): void {
+            this.par.checkPars();
             this.countTiles(this.par.layers);
             this.determineTiles();
         }
@@ -183,6 +189,7 @@ namespace Hessellate {
             let mainPolygon = new Polygon(vertices);
 
             let innerPolygons: Polygon[] = [];
+            /*
             for (let i = 0; i < this.par.n - 1; i += 2) {
                 innerPolygons.push(new Polygon([
                     vertices[i],
@@ -191,6 +198,7 @@ namespace Hessellate {
                     Point.fromPolar(0.2, vertices[i].arg())
                 ]));
             }
+            */
 
             return new Tile(Point.origin, mainPolygon, innerPolygons);
         }
@@ -218,12 +226,12 @@ namespace Hessellate {
             }
         }
 
-        public update(g: Graphics): void {
-            let x_center = g.x_center;
-            let y_center = g.y_center;
+        public update(): void {
+            let x_center = this.g.x_center;
+            let y_center = this.g.y_center;
             let radius = Math.min(x_center, y_center);
-            g.fillRect(0, 0, g.width, g.height, this.par.bgColor);
-            g.fillCircle(x_center, y_center, radius, this.par.diskColor);
+            this.g.fillRect(0, 0, this.g.width, this.g.height, this.par.bgColor);
+            this.g.fillCircle(x_center, y_center, radius, this.par.diskColor);
 
             this.P.forEach((tile, i) => {
                 let tile2 = tile.moebius(this.par.moebiusZ0, this.par.moebiusT, this.par.detailLevel);
@@ -232,8 +240,8 @@ namespace Hessellate {
                     if (i === 0 && this.par.highlightCenter) {
                         c = this.par.highlightTileColor;
                     }
-                    if (this.par.fill) { tile2.fill(g, c); }
-                    tile2.stroke(g, this.par.lineColor);
+                    if (this.par.fill) { tile2.fill(this.g, c); }
+                    tile2.stroke(this.g, this.par.lineColor);
                 }
             });
         }
