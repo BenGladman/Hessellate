@@ -8,21 +8,36 @@ namespace Hessellate {
      * From http://aleph0.clarku.edu/~djoyce/poincare/PoincareB.html
      */
     export class Line {
-
+        /**
+         * Start of line segment.
+         */
         private A: Point;
-        private B: Point;  // this is the line between A and B
+
+        /**
+         * End of line segment.
+         */
+        private B: Point;
 
         private isStraight: boolean;
 
-        // if it's a circle, then a center C and radius r are needed
-
+        /*
+         * Center of circle (if not straight).
+         */
         private C: Point;
+
+        /**
+         * Radius of circle (if not straight).
+         */
         private r: number;
 
-        // if it's is a straight line, then a point P and a direction D
-        // are needed
-
+        /**
+         * Point on line (if straight).
+         */
         private P: Point;
+
+        /**
+         * Direction (if straight).
+         */
         private D: Point;
 
         constructor(A: Point, B: Point) {
@@ -65,7 +80,105 @@ namespace Hessellate {
             }
         }
 
-        // append screen coordinates to the list in order to draw the line
+        /**
+         * Calculate intersection point (or points) of this line and another.
+         */
+        public intersection(L: Line): [Point, Point] {
+            if (this.isStraight && L.isStraight) {
+                return [Line.ssIntersection(this, L), null];
+
+            } else if (this.isStraight) {
+                return Line.scIntersection(this, L);
+
+            } else if (L.isStraight) {
+                return Line.scIntersection(L, this);
+
+            } else {
+                // todo
+                throw new Error("Not supported.");
+            }
+        }
+
+        /**
+         * Calculate intersection point of two straight lines.
+         * From http://stackoverflow.com/questions/385305/efficient-maths-algorithm-to-calculate-intersections
+         */
+        private static ssIntersection(s1: Line, s2: Line): Point {
+
+            const x1 = s1.A.x;
+            const y1 = s1.A.y;
+            const x2 = s1.B.x;
+            const y2 = s1.B.y;
+            const x3 = s2.A.x;
+            const y3 = s2.A.y;
+            const x4 = s2.B.x;
+            const y4 = s2.B.y;
+
+            const x12 = x1 - x2;
+            const x34 = x3 - x4;
+            const y12 = y1 - y2;
+            const y34 = y3 - y4;
+
+            const c = x12 * y34 - y12 * x34;
+
+            if (Math.abs(c) < 0.01) {
+                // No intersection
+                return null;
+            } else {
+                // Intersection
+                const a = x1 * y2 - y1 * x2;
+                const b = x3 * y4 - y3 * x4;
+
+                const x = (a * x34 - b * x12) / c;
+                const y = (a * y34 - b * y12) / c;
+
+                return new Point(x, y);
+            }
+        }
+
+        /**
+         * Calculate intersection point(s) of a straight line and a circle.
+         * From http://stackoverflow.com/questions/13053061/circle-line-intersection-points
+         */
+        private static scIntersection(straight: Line, circle: Line): [Point, Point] {
+            const baX = straight.B.x - straight.A.x;
+            const baY = straight.B.y - straight.A.y;
+            const caX = circle.C.x - straight.A.x;
+            const caY = circle.C.y - straight.A.y;
+
+            const a = baX * baX + baY * baY;
+            const bBy2 = baX * caX + baY * caY;
+            const c = caX * caX + caY * caY - circle.r * circle.r;
+
+            const pBy2 = bBy2 / a;
+            const q = c / a;
+
+            const disc = pBy2 * pBy2 - q;
+            if (disc < 0) {
+                return [null, null];
+            }
+
+            // if disc == 0 ... dealt with later
+            const tmpSqrt = Math.sqrt(disc);
+            const abScalingFactor1 = -pBy2 + tmpSqrt;
+            const abScalingFactor2 = -pBy2 - tmpSqrt;
+
+            const p1 = new Point(straight.A.x - baX * abScalingFactor1, straight.A.y - baY * abScalingFactor1);
+            if (disc === 0) { // abScalingFactor1 == abScalingFactor2
+                return [p1, null];
+            }
+
+            const p2 = new Point(straight.A.x - baX * abScalingFactor2, straight.A.y - baY * abScalingFactor2);
+            if (p1.norm() < p2.norm()) {
+                return [p1, p2];
+            } else {
+                return [p2, p1];
+            }
+        }
+
+        /**
+         * Append screen coordinates to the list in order to draw the line.
+         */
         public appendScreenCoordinates(list: ScreenCoordinateList, g: Graphics) {
             let x_center = g.x_center;
             let y_center = g.y_center;

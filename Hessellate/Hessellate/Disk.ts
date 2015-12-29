@@ -157,7 +157,7 @@ namespace Hessellate {
             }
             return j;
         }
-  
+
         public constructCenterTile(): Tile {
             // Initialize P as the center polygon in an n-k regular or quasiregular tiling.
             // Let ABC be a triangle in a regular (n,k0-tiling, where
@@ -182,23 +182,32 @@ namespace Hessellate {
             // They're all at distance s from the center of the Poincare disk.
             let vertices: Point[] = [];
             for (let i = 0; i < this.par.n; ++i) {
-                let point = new Point(s * Math.cos((3 + 2 * i) * angleA),
-                    s * Math.sin((3 + 2 * i) * angleA));
-                vertices.push(point);
+                vertices.push(Point.fromPolar(s, (2 * i * angleA)));
             }
-            let mainPolygon = new Polygon(vertices);
+            const mainPolygon = new Polygon(vertices);
 
-            let innerPolygons: Polygon[] = [];
-            /*
-            for (let i = 0; i < this.par.n - 1; i += 2) {
-                innerPolygons.push(new Polygon([
-                    vertices[i],
-                    vertices[i + 1],
-                    Point.fromPolar(0.2, vertices[i + 1].arg()),
-                    Point.fromPolar(0.2, vertices[i].arg())
-                ]));
-            }
-            */
+            const v0arg = vertices[0].arg();
+            const v1arg = vertices[1].arg();
+            const arc = v1arg - v0arg;
+            const side = new Line(vertices[0], vertices[1]);
+
+            const pattern = [[1, 0.2], [1, 0.5], [0.5, 0.5], [0.5, 0]];
+
+            const innerPolygons: Polygon[] = [];
+            //innerPolygons.push(new Polygon(vertices.map((p) => Point.fromPolar(p.norm() * -1, p.arg()))));
+            innerPolygons.push(new Polygon(
+                pattern.map((a) => {
+                    const rayangle = v0arg + arc * a[1];
+                    const ray = new Line(Point.origin, Point.fromPolar(1, rayangle));
+                    const raysideintersection = side.intersection(ray);
+                    if (raysideintersection[0]) {
+                        const disttoside = raysideintersection[0].norm();
+                        return Point.fromPolar(a[0] * disttoside, rayangle);
+                    } else {
+                        return Point.origin;
+                    }
+                })
+            ));
 
             return new Tile(Point.origin, mainPolygon, innerPolygons);
         }
