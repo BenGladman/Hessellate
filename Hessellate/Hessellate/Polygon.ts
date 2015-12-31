@@ -19,12 +19,20 @@ namespace Hessellate {
          */
         private vertices: Point[];
 
+        /*
+         * The list of edges
+         */
+        private edges: Line[];
+
         constructor(vertices: Point[]) {
             this.n = vertices.length;
             this.vertices = vertices;
+            this.edges = vertices.map((v, i, arr) => new Line(v, arr[(i + 1) % arr.length]));
         }
 
-        public getVertex(i: number): Point { return this.vertices[i]; }
+        public getVertex(i: number): Point { return this.vertices[i % this.n]; }
+
+        public getEdge(i: number): Line { return this.edges[i % this.n]; }
 
         public toString(): string {
             let S = "[";
@@ -77,10 +85,9 @@ namespace Hessellate {
 
         private setScreenCoordinateArrays(g: Graphics): ScreenCoordinateList {
             let pointList: ScreenCoordinateList = null;
-            for (let i = 0; i < this.n; ++i) {
-                let line = new Line(this.vertices[i], this.vertices[(i + 1) % this.n]);
-                pointList = line.appendScreenCoordinates(pointList, g);
-            }
+            this.edges.forEach((edge) => {
+                pointList = edge.appendScreenCoordinates(pointList, g);
+            });
             return pointList;
         }
 

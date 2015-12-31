@@ -186,28 +186,34 @@ namespace Hessellate {
             }
             const mainPolygon = new Polygon(vertices);
 
-            const v0arg = vertices[0].arg();
-            const v1arg = vertices[1].arg();
-            const arc = v1arg - v0arg;
-            const side = new Line(vertices[0], vertices[1]);
-
-            const pattern = [[1, 0.2], [1, 0.5], [0.5, 0.5], [0.5, 0]];
-
             const innerPolygons: Polygon[] = [];
-            //innerPolygons.push(new Polygon(vertices.map((p) => Point.fromPolar(p.norm() * -1, p.arg()))));
-            innerPolygons.push(new Polygon(
-                pattern.map((a) => {
-                    const rayangle = v0arg + arc * a[1];
-                    const ray = new Line(Point.origin, Point.fromPolar(1, rayangle));
-                    const raysideintersection = side.intersection(ray);
-                    if (raysideintersection[0]) {
-                        const disttoside = raysideintersection[0].norm();
-                        return Point.fromPolar(a[0] * disttoside, rayangle);
-                    } else {
-                        return Point.origin;
-                    }
-                })
-            ));
+
+            for (s = 1; s < this.par.n + 1; s += this.par.rotateTile + 1) {
+                var v0arg = mainPolygon.getVertex(s).arg();
+                var v1arg = mainPolygon.getVertex(s + 1).arg();
+                if (v1arg < v0arg) { v1arg += 2 * Math.PI; }
+                var arc = v1arg - v0arg;
+
+                this.par.pattern.forEach((ppoly) => {
+                    innerPolygons.push(new Polygon(ppoly.map((pvert, i) => {
+                        const rayangle = v0arg + arc * pvert[1];
+                        const ray = new Line(Point.origin, Point.fromPolar(1, rayangle));
+
+                        const side = pvert[1] < 0 ? mainPolygon.getEdge(s - 1)
+                            : pvert[1] <= 1 ? mainPolygon.getEdge(s)
+                                : mainPolygon.getEdge(s + 1)
+
+                        const raysideintersection = side.intersection(ray);
+                        if (raysideintersection[0]) {
+                            const disttoside = raysideintersection[0].norm();
+                            console.log(`dist to side ${i} = ${disttoside}, ${rayangle}`);
+                            return Point.fromPolar(pvert[0] * disttoside, rayangle);
+                        } else {
+                            return Point.origin;
+                        }
+                    })))
+                });
+            }
 
             return new Tile(Point.origin, mainPolygon, innerPolygons);
         }

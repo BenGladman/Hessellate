@@ -10,7 +10,7 @@ namespace Hessellate {
         /**
          * The number of sides on a polygon.
          */
-        n: number = 5;
+        n: number = 6;
 
         /**
          * Vertex valence, the number of polygons that meet at each vertex.
@@ -59,7 +59,12 @@ namespace Hessellate {
         /**
          * Number of sides to rotate adjacent tiles.
          */
-        rotateTile: number = 0;
+        rotateTile: number = 1;
+
+        pattern = [
+            [[0.1, 0.5], [0.9, 0], [1.2, 0.5], [0.9, 1]],
+            [[0.1, 1.5], [0.9, 1], [0.8, 1.5], [0.9, 2]]
+        ];
 
         public checkPars(): void {
             // n should be between 3 and 20
