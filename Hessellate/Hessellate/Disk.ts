@@ -49,11 +49,6 @@ namespace Hessellate {
         private innerTiles: number;
 
         /**
-         * This list of colors for the tiles.
-         */
-        private C: Color[];
-
-        /**
          * Graphics object for drawing.
          */
         private g: Graphics;
@@ -112,10 +107,8 @@ namespace Hessellate {
         private determineTiles(): void {
             this.P = [];
             this.rule = [];
-            this.C = [];
             this.P[0] = this.constructCenterTile();
             this.rule[0] = 0;
-            this.C[0] = this.randomColor();
             let j = 1; // index of the next tile to create
             for (let i = 0; i < this.innerTiles; ++i) {
                 j = this.applyRule(i, j);
@@ -132,11 +125,6 @@ namespace Hessellate {
                 // Create a tile adjacent to P[i]
                 this.P[j] = this.createNextTile(this.P[i], s % this.par.n);
                 this.rule[j] = (this.par.k == 3 && s == start && r != 0) ? 4 : 3;
-                if (this.par.alternating && j > 1) {
-                    this.C[j] = (this.C[i] == this.C[0]) ? this.C[1] : this.C[0];
-                } else {
-                    this.C[j] = this.randomColor();
-                }
                 j++;
 
                 let m = 0;
@@ -147,11 +135,6 @@ namespace Hessellate {
                     // Create a tile adjacent to P[j-1]
                     this.P[j] = this.createNextTile(this.P[j - 1], 1);
                     this.rule[j] = (this.par.n == 3 && m == this.par.k - 4) ? 1 : 2;
-                    if (this.par.alternating) {
-                        this.C[j] = (this.C[j - 1] == this.C[0]) ? this.C[1] : this.C[0];
-                    } else {
-                        this.C[j] = this.randomColor();
-                    }
                     j++;
                 }
             }
@@ -188,13 +171,13 @@ namespace Hessellate {
 
             const innerPolygons: Polygon[] = [];
 
-            for (s = 1; s < this.par.n + 1; s += this.par.rotateTile + 1) {
+            for (s = 1; s < this.par.n + 1; s += this.par.patternRepeat) {
                 var v0arg = mainPolygon.getVertex(s).arg();
                 var v1arg = mainPolygon.getVertex(s + 1).arg();
                 if (v1arg < v0arg) { v1arg += 2 * Math.PI; }
                 var arc = v1arg - v0arg;
 
-                this.par.pattern.forEach((ppoly) => {
+                this.par.patternDefn.forEach((ppoly) => {
                     innerPolygons.push(new Polygon(ppoly.map((pvert, i) => {
                         const rayangle = v0arg + arc * pvert[1];
                         const ray = new Line(Point.origin, Point.fromPolar(1, rayangle));
@@ -206,7 +189,6 @@ namespace Hessellate {
                         const raysideintersection = side.intersection(ray);
                         if (raysideintersection[0]) {
                             const disttoside = raysideintersection[0].norm();
-                            console.log(`dist to side ${i} = ${disttoside}, ${rayangle}`);
                             return Point.fromPolar(pvert[0] * disttoside, rayangle);
                         } else {
                             return Point.origin;
@@ -222,7 +204,7 @@ namespace Hessellate {
          * Reflect P thru the point or the side indicated by the side s.
          */
         private createNextTile(tile: Tile, s: number): Tile {
-            let rotateAngle = Math.PI * 2 * this.par.rotateTile / this.par.n;
+            let rotateAngle = Math.PI * 2 * (this.par.patternRepeat - 1) / this.par.n;
             if (this.par.quasiregular) {
                 let V = tile.getVertex(s);
                 return tile.rotateInnerPolygons(rotateAngle).reflect(V, this.par.n - s);
@@ -233,14 +215,6 @@ namespace Hessellate {
             }
         }
 
-        private randomColor(): Color {
-            if (this.par.grayScale) {
-                return Color.randomGray();
-            } else {
-                return Color.randomColor(30, 60);
-            }
-        }
-
         public update(): void {
             let x_center = this.g.x_center;
             let y_center = this.g.y_center;
@@ -248,17 +222,33 @@ namespace Hessellate {
             this.g.fillRect(0, 0, this.g.width, this.g.height, this.par.bgColor);
             this.g.fillCircle(x_center, y_center, radius, this.par.diskColor);
 
-            this.P.forEach((tile, i) => {
-                let tile2 = tile.moebius(this.par.moebiusZ0, this.par.moebiusT, this.par.detailLevel);
-                if (tile2) {
-                    let c = this.C[i];
-                    if (i === 0 && this.par.highlightCenter) {
-                        c = this.par.highlightTileColor;
+            const tile2s = this.P.map((tile) => tile.moebius(this.par.moebiusZ0, this.par.moebiusT, this.par.detailLevel));
+
+            if (this.par.fill) {
+                tile2s.forEach((tile2, i) => {
+                    if (tile2) {
+                        const c = (i === 0 && this.par.highlightCenter) ? this.par.highlightTileColor
+                            : this.par.fillColor.shade(i, 20);
+                        tile2.fill(this.g, c);
                     }
-                    if (this.par.fill) { tile2.fill(this.g, c); }
-                    tile2.stroke(this.g, this.par.lineColor);
-                }
-            });
+                });
+            }
+
+            if (this.par.outline) {
+                tile2s.forEach((tile2) => {
+                    if (tile2) {
+                        tile2.stroke(this.g, this.par.outlineColor);
+                    }
+                });
+            }
+
+            if (this.par.pattern && this.par.patternDefn) {
+                tile2s.forEach((tile2, i) => {
+                    if (tile2) {
+                        tile2.fillInner(this.g, this.par.patternColors.map((c) => c.shade(i, 10)));
+                    }
+                });
+            }
         }
     }
 }

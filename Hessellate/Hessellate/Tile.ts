@@ -48,10 +48,12 @@ namespace Hessellate {
         }
 
         public fill(g: Graphics, color: Color): void {
+            this.mainPolygon.fill(g, color);
+        }
+
+        public fillInner(g: Graphics, colors: Color[]): void {
             if (this.innerPolygons && this.innerPolygons.length) {
-                this.innerPolygons.forEach((polygon) => polygon && polygon.fill(g, color));
-            } else if (this.mainPolygon) {
-                this.mainPolygon.fill(g, color);
+                this.innerPolygons.forEach((polygon, i) => polygon && polygon.fill(g, colors[i % colors.length]));
             }
         }
 

@@ -33,8 +33,9 @@ namespace Hessellate.UI.Controls {
             setRadioValue("control-n", par.n);
             setRadioValue("control-k", par.k);
             setCheckboxValue("control-quasiregular", par.quasiregular);
-            setCheckboxValue("control-alternating", par.alternating);
-            setRadioValue("control-rotatetile", par.rotateTile);
+            setCheckboxValue("control-fill", par.fill);
+            setCheckboxValue("control-outline", par.outline);
+            setCheckboxValue("control-pattern", par.pattern);
         }
 
         controls.addEventListener("change", (ev) => {
@@ -43,14 +44,20 @@ namespace Hessellate.UI.Controls {
                 case "control-n":
                 case "control-k":
                 case "control-quasiregular":
-                case "control-alternating":
-                case "control-rotatetile":
                     par.n = getRadioValue("control-n");
                     par.k = getRadioValue("control-k");
                     par.quasiregular = getCheckboxValue("control-quasiregular");
-                    par.alternating = getCheckboxValue("control-alternating");
-                    par.rotateTile = getRadioValue("control-rotatetile");
                     disk.init();
+                    updateControls();
+                    disk.update();
+                    break;
+
+                case "control-fill":
+                case "control-outline":
+                case "control-pattern":
+                    par.fill = getCheckboxValue("control-fill");
+                    par.outline = getCheckboxValue("control-outline");
+                    par.pattern = getCheckboxValue("control-pattern");
                     updateControls();
                     disk.update();
                     break;

@@ -29,17 +29,15 @@ namespace Hessellate {
          */
         detailLevel: number = 0.99;
 
-        bgColor: Color = Color.White;
-        diskColor: Color = Color.MidGrey;
-        lineColor: Color = Color.DarkGrey;
-        highlightTileColor: Color = Color.White;
-        fill: boolean = true;
-        grayScale: boolean;
+        bgColor = Color.White;
+        diskColor = Color.MidGrey;
 
-        /**
-         * Alternating colors
-         */
-        alternating: boolean;
+        outline = true;
+        outlineColor = Color.DarkGrey;
+
+        fill = true;
+        fillColor = Color.Purple;
+        highlightTileColor = Color.White;
 
         /**
          * Z0 argument in moebius transform.
@@ -57,14 +55,24 @@ namespace Hessellate {
         highlightCenter: boolean = false;
 
         /**
-         * Number of sides to rotate adjacent tiles.
+         * Show or hide pattern.
          */
-        rotateTile: number = 1;
+        pattern = false;
 
-        pattern = [
-            [[0.1, 0.5], [0.9, 0], [1.2, 0.5], [0.9, 1]],
-            [[0.1, 1.5], [0.9, 1], [0.8, 1.5], [0.9, 2]]
+        patternDefn = [
+            [[0.1, 0.5], [0.9, 0.1], [0.9, 0.9]]
         ];
+
+        patternColors = [
+            Color.Orange,
+            Color.Yellow
+        ];
+
+        /**
+         * How the pattern repeats:
+         * 1 = Repeat for each side, 2 = Repeat every other side.
+         */
+        patternRepeat = 1;
 
         public checkPars(): void {
             // n should be between 3 and 20
@@ -86,12 +94,11 @@ namespace Hessellate {
                 this.layers = Math.min(this.layers, 4);
             }
 
-            this.alternating = this.alternating && (this.k % 2 == 0);
         }
 
         public toString(): string {
             return `[n=${this.n},k=${this.k},layers=${this.layers}`
-                +`,quasiregular=${this.quasiregular },alternating=${this.alternating }]`;
+                +`,quasiregular=${this.quasiregular}]`;
         }
 
     }

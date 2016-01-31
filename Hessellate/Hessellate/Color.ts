@@ -23,6 +23,17 @@
             return css;
         }
 
+        public shade(seed: number, range: number): Color {
+            const lmin = Math.max(0, this.l - range);
+            const lmax = Math.min(100, this.l + range);
+
+            seed = (seed * 9301 + 49297) % 233280;
+            const rnd = seed / 233280;
+
+            const newl = Math.floor(lmin + rnd * (lmax - lmin));
+            return new Color(this.h, this.s, newl);
+        }
+
         static randomGray(): Color {
             return new Color(
                 0, // hue irrelevant
@@ -43,5 +54,8 @@
         static White = new Color(0, 0, 100);
         static MidGrey = new Color(0, 0, 80);
         static DarkGrey = new Color(0, 0, 20);
+        static Purple = new Color(313, 70, 50);
+        static Orange = new Color(46, 70, 50);
+        static Yellow = new Color(60, 70, 50);
     }
 }
