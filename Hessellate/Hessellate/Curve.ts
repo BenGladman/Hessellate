@@ -55,13 +55,11 @@ abstract class Curve {
     // and b so that the approximating polygon looks like the curve.  
     // The last point to be included will be (f(b),g(b)).}
     public interpolate(list: ScreenCoordinateList, a: number, b: number): ScreenCoordinateList {
-        // first try bending it at the midpoint
-        let result = this.bent(a, b, (a + b) / 2.0, list);
-        if (result != list) return result;
-        // now try 4 random points
-        for (let i = 0; i < 4; ++i) {
-            let t = Math.random();
-            result = this.bent(a, b, t * a + (1.0 - t) * b, list);
+        // try bending at 5 points
+        const bendpoints = [0.5, 0.167, 0.833, 0.333, 0.667];
+        for (let i = 0; i < 5; ++i) {
+            let t = bendpoints[i];
+            let result = this.bent(a, b, t * a + (1.0 - t) * b, list);
             if (result != list) return result;
         }
         // it's a straight line
