@@ -1,21 +1,23 @@
-﻿/// <reference path="Disk.ts" />
-/// <reference path="Graphics.ts" />
-/// <reference path="Parameters.ts" />
-/// <reference path="UI.Canvas.ts" />
-/// <reference path="UI.Controls.ts" />
+﻿import Disk from "./Disk";
+import Graphics from "./Graphics";
+import Parameters from "./Parameters";
+import UiCanvas from "./UiCanvas";
+import UiControls from "./UiControls";
 
-window.onload = () => {
-    const canvas = document.getElementById("canvas") as HTMLCanvasElement;
-    const controls = document.getElementById("controls") as HTMLFieldSetElement;
+export default class App {
+    static init = () => {
+        const canvas = document.getElementById("canvas") as HTMLCanvasElement;
+        const controls = document.getElementById("controls") as HTMLFieldSetElement;
 
-    const g = new Hessellate.Graphics(canvas);
-    const par = new Hessellate.Parameters();
+        const g = new Graphics(canvas);
+        const par = new Parameters();
 
-    const d = new Hessellate.Disk(par, g);
+        const d = new Disk(par, g);
 
-    Hessellate.UI.Canvas.init(canvas, par, d);
-    Hessellate.UI.Controls.init(controls, par, d);
+        UiCanvas.init(canvas, par, d);
+        UiControls.init(controls, par, d);
 
-    d.init();
-    d.update();
-};
+        d.init();
+        d.update();
+    }
+}

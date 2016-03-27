@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <title>Hessellate</title>
     <link rel="stylesheet" href="app.css" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/0.19.24/system-register-only.js"></script>
     <script src="Hessellate.js"></script>
 </head>
 <body>
@@ -35,5 +36,8 @@
         <label class="h-checkbox-label"><input type="checkbox" name="control-outline" />Outline Color</label>
         <label class="h-checkbox-label"><input type="checkbox" name="control-pattern" />Pattern Color</label>
     </fieldset>
+    <script>
+        System.import("App").then((app) => app.default.init());
+    </script>
 </body>
 </html>

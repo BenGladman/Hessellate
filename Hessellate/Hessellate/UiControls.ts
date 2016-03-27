@@ -1,8 +1,8 @@
-﻿/// <reference path="Disk.ts" />
-/// <reference path="Parameters.ts" />
+﻿import Disk from "./Disk";
+import Parameters from "./Parameters";
 
-namespace Hessellate.UI.Controls {
-    export function init(controls: HTMLFieldSetElement, par: Parameters, disk: Disk) {
+export default class UiControls {
+    static init = (controls: HTMLFieldSetElement, par: Parameters, disk: Disk) => {
         const getRadioValue = function (radioName: string): number {
             const qs = `input[name="${radioName}"]:checked`;
             const el = controls.querySelector(qs) as HTMLInputElement;
