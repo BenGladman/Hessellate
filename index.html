@@ -1,73 +1,125 @@
-﻿<!doctype html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Hessellate by BenGladman</title>
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/github-dark.css">
-    <link rel="stylesheet" href="stylesheets/Hessellate.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="javascripts/respond.js"></script>
-    <script src="javascripts/Hessellate.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <!--[if lt IE 8]>
-    <link rel="stylesheet" href="stylesheets/ie.css">
-    <![endif]-->
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+﻿<!DOCTYPE html>
 
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Hessellate</title>
+    <link rel="stylesheet" href="app.css" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/systemjs/0.19.24/system-register-only.js"></script>
+    <script src="Hessellate.js"></script>
 </head>
 <body>
-    <div id="header">
-        <nav>
-            <li class="fork"><a href="https://github.com/BenGladman/Hessellate">View On GitHub</a></li>
-            <li class="downloads"><a href="https://github.com/BenGladman/Hessellate/zipball/master">ZIP</a></li>
-            <li class="downloads"><a href="https://github.com/BenGladman/Hessellate/tarball/master">TAR</a></li>
-            <li class="title">DOWNLOADS</li>
-        </nav>
-    </div><!-- end header -->
+    <h1>Hessellate</h1>
+    <h2>Hyperbolic Tessellations on the Poincaré Disk</h2>
 
-    <div class="wrapper">
+    <canvas id="canvas" class="h-canvas" height="500" width="500"></canvas>
 
-        <section>
-            <div id="title">
-                <h1>Hessellate</h1>
-                <p>Hyperbolic Tessellations on the Poincaré Disk</p>
-                <hr>
-                <span class="credits left">Project maintained by <a href="https://github.com/BenGladman">BenGladman</a></span>
-                <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="https://twitter.com/michigangraham">mattgraham</a></span>
-            </div>
-
-            <canvas id="canvas" class="h-canvas" height="500" width="500"></canvas>
-
-            <fieldset id="controls" class="h-controls">
-                <fieldset class="h-radio-group">
-                    <label class="h-field-label">Sides per polygon: </label>
-                    <label class="h-radio-label"><input type="radio" name="control-n" value="3" />3</label>
-                    <label class="h-radio-label"><input type="radio" name="control-n" value="4" />4</label>
-                    <label class="h-radio-label"><input type="radio" name="control-n" value="5" />5</label>
-                    <label class="h-radio-label"><input type="radio" name="control-n" value="6" />6</label>
-                    <label class="h-radio-label"><input type="radio" name="control-n" value="7" />7</label>
-                    <label class="h-radio-label"><input type="radio" name="control-n" value="8" />8</label>
-                </fieldset>
-                <fieldset class="h-radio-group">
-                    <label class="h-field-label">Polygons per vertex: </label>
-                    <label class="h-radio-label"><input type="radio" name="control-k" value="3" />3</label>
-                    <label class="h-radio-label"><input type="radio" name="control-k" value="4" />4</label>
-                    <label class="h-radio-label"><input type="radio" name="control-k" value="5" />5</label>
-                    <label class="h-radio-label"><input type="radio" name="control-k" value="6" />6</label>
-                    <label class="h-radio-label"><input type="radio" name="control-k" value="7" />7</label>
-                    <label class="h-radio-label"><input type="radio" name="control-k" value="8" />8</label>
-                </fieldset>
-                <label class="h-checkbox-label"><input type="checkbox" name="control-quasiregular" />Quasiregular</label>
-                <label class="h-checkbox-label"><input type="checkbox" name="control-fill" />Fill Color</label>
-                <label class="h-checkbox-label"><input type="checkbox" name="control-outline" />Outline Color</label>
-                <label class="h-checkbox-label"><input type="checkbox" name="control-pattern" />Pattern Color</label>
+    <fieldset id="controls" class="h-controls">
+        <fieldset class="h-row">
+            <label class="h-label-left">Sides per polygon: </label>
+            <fieldset class="h-group">
+                <label class="h-radio-label"><input type="radio" name="control-n" value="3" />3</label>
+                <label class="h-radio-label"><input type="radio" name="control-n" value="4" />4</label>
+                <label class="h-radio-label"><input type="radio" name="control-n" value="5" />5</label>
+                <label class="h-radio-label"><input type="radio" name="control-n" value="6" />6</label>
+                <label class="h-radio-label"><input type="radio" name="control-n" value="7" />7</label>
+                <label class="h-radio-label"><input type="radio" name="control-n" value="8" />8</label>
             </fieldset>
+        </fieldset>
 
-        </section>
-    </div>
+        <fieldset class="h-row">
+            <label class="h-label-left">Polygons per vertex: </label>
+            <fieldset class="h-group">
+                <label class="h-radio-label"><input type="radio" name="control-k" value="3" />3</label>
+                <label class="h-radio-label"><input type="radio" name="control-k" value="4" />4</label>
+                <label class="h-radio-label"><input type="radio" name="control-k" value="5" />5</label>
+                <label class="h-radio-label"><input type="radio" name="control-k" value="6" />6</label>
+                <label class="h-radio-label"><input type="radio" name="control-k" value="7" />7</label>
+                <label class="h-radio-label"><input type="radio" name="control-k" value="8" />8</label>
+            </fieldset>
+        </fieldset>
+
+        <fieldset class="h-row">
+            <label class="h-checkbox-label h-label-left"><input type="checkbox" name="control-quasiregular" />Quasiregular</label>
+        </fieldset>
+
+        <fieldset class="h-row">
+            <label class="h-label-left">Disk</label>
+            <fieldset class="h-group">
+                <label class="h-radio-label"><input type="radio" name="control-diskcolor" value="0" />Red</label>
+                <label class="h-radio-label"><input type="radio" name="control-diskcolor" value="1" />Orange</label>
+                <label class="h-radio-label"><input type="radio" name="control-diskcolor" value="2" />Yellow</label>
+                <label class="h-radio-label"><input type="radio" name="control-diskcolor" value="3" />Green</label>
+                <label class="h-radio-label"><input type="radio" name="control-diskcolor" value="4" />Blue</label>
+                <label class="h-radio-label"><input type="radio" name="control-diskcolor" value="5" />Purple</label>
+                <br />
+                <label class="h-radio-label"><input type="radio" name="control-diskcolor" value="6" />Black</label>
+                <label class="h-radio-label"><input type="radio" name="control-diskcolor" value="7" />Grey 1</label>
+                <label class="h-radio-label"><input type="radio" name="control-diskcolor" value="8" />Grey 2</label>
+                <label class="h-radio-label"><input type="radio" name="control-diskcolor" value="9" />White</label>
+            </fieldset>
+        </fieldset>
+
+        <fieldset class="h-row">
+            <label class="h-checkbox-label h-label-left"><input type="checkbox" name="control-fill" />Fill</label>
+            <fieldset class="h-group">
+                <label class="h-radio-label"><input type="radio" name="control-fillcolor" value="0" />Red</label>
+                <label class="h-radio-label"><input type="radio" name="control-fillcolor" value="1" />Orange</label>
+                <label class="h-radio-label"><input type="radio" name="control-fillcolor" value="2" />Yellow</label>
+                <label class="h-radio-label"><input type="radio" name="control-fillcolor" value="3" />Green</label>
+                <label class="h-radio-label"><input type="radio" name="control-fillcolor" value="4" />Blue</label>
+                <label class="h-radio-label"><input type="radio" name="control-fillcolor" value="5" />Purple</label>
+                <br />
+                <label class="h-radio-label"><input type="radio" name="control-fillcolor" value="6" />Black</label>
+                <label class="h-radio-label"><input type="radio" name="control-fillcolor" value="7" />Grey 1</label>
+                <label class="h-radio-label"><input type="radio" name="control-fillcolor" value="8" />Grey 2</label>
+                <label class="h-radio-label"><input type="radio" name="control-fillcolor" value="9" />White</label>
+            </fieldset>
+        </fieldset>
+
+        <fieldset class="h-row">
+            <label class="h-checkbox-label h-label-left"><input type="checkbox" name="control-outline" />Outline</label>
+            <fieldset class="h-group">
+                <label class="h-radio-label"><input type="radio" name="control-outlinecolor" value="0" />Red</label>
+                <label class="h-radio-label"><input type="radio" name="control-outlinecolor" value="1" />Orange</label>
+                <label class="h-radio-label"><input type="radio" name="control-outlinecolor" value="2" />Yellow</label>
+                <label class="h-radio-label"><input type="radio" name="control-outlinecolor" value="3" />Green</label>
+                <label class="h-radio-label"><input type="radio" name="control-outlinecolor" value="4" />Blue</label>
+                <label class="h-radio-label"><input type="radio" name="control-outlinecolor" value="5" />Purple</label>
+                <br />
+                <label class="h-radio-label"><input type="radio" name="control-outlinecolor" value="6" />Black</label>
+                <label class="h-radio-label"><input type="radio" name="control-outlinecolor" value="7" />Grey 1</label>
+                <label class="h-radio-label"><input type="radio" name="control-outlinecolor" value="8" />Grey 2</label>
+                <label class="h-radio-label"><input type="radio" name="control-outlinecolor" value="9" />White</label>
+            </fieldset>
+        </fieldset>
+
+        <fieldset class="h-row">
+            <label class="h-checkbox-label h-label-left"><input type="checkbox" name="control-pattern" />Pattern</label>
+            <fieldset class="h-group">
+                <label class="h-radio-label"><input type="radio" name="control-patterncolor" value="0" />Red</label>
+                <label class="h-radio-label"><input type="radio" name="control-patterncolor" value="1" />Orange</label>
+                <label class="h-radio-label"><input type="radio" name="control-patterncolor" value="2" />Yellow</label>
+                <label class="h-radio-label"><input type="radio" name="control-patterncolor" value="3" />Green</label>
+                <label class="h-radio-label"><input type="radio" name="control-patterncolor" value="4" />Blue</label>
+                <label class="h-radio-label"><input type="radio" name="control-patterncolor" value="5" />Purple</label>
+                <br />
+                <label class="h-radio-label"><input type="radio" name="control-patterncolor" value="6" />Black</label>
+                <label class="h-radio-label"><input type="radio" name="control-patterncolor" value="7" />Grey 1</label>
+                <label class="h-radio-label"><input type="radio" name="control-patterncolor" value="8" />Grey 2</label>
+                <label class="h-radio-label"><input type="radio" name="control-patterncolor" value="9" />White</label>
+            </fieldset>
+        </fieldset>
+
+    </fieldset>
+
+    <h2>Ben Gladman, 2016</h2>
+    <a href="http://aleph0.clarku.edu/~djoyce/poincare/PoincareB.html">Adapted from work by D. Joyce</a>
+    <br />
+    <a href="https://github.com/BenGladman/Hessellate">View source on GitHub</a>
+
+    <script>
+        System.import("App").then((app) => app.default.init());
+    </script>
 </body>
 </html>
