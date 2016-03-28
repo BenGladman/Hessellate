@@ -22,14 +22,16 @@
         return css;
     }
 
-    public shade(seed: number, range: number): Color {
+    /**
+     * Return similar colour with different lightness.
+     * @param lightness Number between 0 and 1.
+     * @param range Integer range from current lightness.
+     */
+    public shade(lightness: number, range: number): Color {
         const lmin = Math.max(0, this.l - range);
         const lmax = Math.min(100, this.l + range);
 
-        seed = (seed * 9301 + 49297) % 233280;
-        const rnd = seed / 233280;
-
-        const newl = Math.floor(lmin + rnd * (lmax - lmin));
+        const newl = Math.floor(lmin + lightness * (lmax - lmin));
         return new Color(this.h, this.s, newl);
     }
 

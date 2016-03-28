@@ -229,8 +229,9 @@ export default class Disk {
         if (this.par.fill) {
             tile2s.forEach((tile2, i) => {
                 if (tile2) {
-                    const c = (i === 0 && this.par.highlightCenter) ? this.par.highlightTileColor
-                        : this.par.fillColor.shade(i, 20);
+                    const c = (i === 0 && this.par.highlightCenter)
+                        ? this.par.highlightTileColor
+                        : this.par.fillColor;
                     tile2.fill(this.g, c);
                 }
             });
@@ -247,7 +248,7 @@ export default class Disk {
         if (this.par.pattern && this.par.patternDefn) {
             tile2s.forEach((tile2, i) => {
                 if (tile2) {
-                    tile2.fillInner(this.g, this.par.patternColors.map((c) => c.shade(i, 10)));
+                    tile2.fillInner(this.g, this.par.patternColors);
                 }
             });
         }

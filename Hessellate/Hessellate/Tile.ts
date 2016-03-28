@@ -8,11 +8,13 @@ export default class Tile {
     private center: Point;
     private mainPolygon: Polygon;
     private innerPolygons: Polygon[];
+    private shadeLightness: number;
 
     constructor(center: Point, mainPolygon: Polygon, innerPolygons: Polygon[]) {
         this.center = center;
         this.mainPolygon = mainPolygon;
         this.innerPolygons = innerPolygons;
+        this.shadeLightness = (1 - center.norm());
     }
 
     public getVertex(i: number): Point { return this.mainPolygon.getVertex(i); }
@@ -49,12 +51,17 @@ export default class Tile {
     }
 
     public fill(g: Graphics, color: Color): void {
-        this.mainPolygon.fill(g, color);
+        this.mainPolygon.fill(g, color.shade(this.shadeLightness, 10));
     }
 
     public fillInner(g: Graphics, colors: Color[]): void {
         if (this.innerPolygons && this.innerPolygons.length) {
-            this.innerPolygons.forEach((polygon, i) => polygon && polygon.fill(g, colors[i % colors.length]));
+            this.innerPolygons.forEach((polygon, i) => {
+                if (polygon) {
+                    const color = colors[i % colors.length].shade(1 - this.shadeLightness, 10);
+                    polygon.fill(g, color);
+                }
+            });
         }
     }
 
