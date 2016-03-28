@@ -1113,7 +1113,7 @@ System.register("Disk", ["Line", "Point", "Polygon", "Tile"], function(exports_1
                     var y_center = this.g.y_center;
                     var radius = Math.min(x_center, y_center);
                     this.g.fillRect(0, 0, this.g.width, this.g.height, this.par.bgColor);
-                    this.g.fillCircle(x_center, y_center, radius, this.par.diskColor);
+                    this.g.fillCircle(x_center, y_center, radius, this.par.diskColor.shade(-5));
                     var tile2s = this.P.map(function (tile) { return tile.moebius(_this.par.moebiusZ0, _this.par.moebiusT, _this.par.detailLevel); });
                     if (this.par.fill) {
                         tile2s.forEach(function (tile2, i) {
