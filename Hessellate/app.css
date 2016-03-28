@@ -5,7 +5,7 @@
 .h-canvas {
 }
 
-.h-field-label {
+.h-label-left {
     display: inline-block;
     width: 12em;
 }
@@ -16,13 +16,19 @@
     padding: 0;
 }
 
-.h-radio-group {
+.h-row {
     border: none;
     padding: 0;
 }
 
-.h-checkbox-label {
-    display: block;
+.h-group {    
+    border: none;
+    display: inline-block;
+    padding: 0;
+}
+
+.h-radio-label {
+    display: inline-block;
 }
 
 .h-checkbox-label > input {

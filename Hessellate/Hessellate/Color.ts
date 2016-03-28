@@ -24,14 +24,12 @@
 
     /**
      * Return similar colour with different lightness.
-     * @param lightness Number between 0 and 1.
-     * @param range Integer range from current lightness.
+     * @param lightnessDelta Change in lightness.
      */
-    public shade(lightness: number, range: number): Color {
-        const lmin = Math.max(0, this.l - range);
-        const lmax = Math.min(100, this.l + range);
-
-        const newl = Math.floor(lmin + lightness * (lmax - lmin));
+    public shade(lightnessDelta: number): Color {
+        let newl = Math.floor(this.l + lightnessDelta);
+        newl = Math.max(0, newl);
+        newl = Math.min(100, newl);
         return new Color(this.h, this.s, newl);
     }
 
@@ -51,11 +49,44 @@
         );
     }
 
-    static Black = new Color(0, 0, 0);
+    static Red = new Color(0, 50, 60);
+    static Orange = new Color(30, 50, 60);
+    static Yellow = new Color(60, 50, 80);
+    static Green = new Color(120, 30, 60);
+    static Blue = new Color(240, 30, 60);
+    static Purple = new Color(313, 50, 60);
+    static Black = new Color(0, 0, 10);
+    static Grey1 = new Color(0, 0, 30);
+    static Grey2 = new Color(0, 0, 80);
     static White = new Color(0, 0, 100);
-    static MidGrey = new Color(0, 0, 80);
-    static DarkGrey = new Color(0, 0, 20);
-    static Purple = new Color(313, 70, 50);
-    static Orange = new Color(46, 70, 50);
-    static Yellow = new Color(60, 70, 50);
+
+    toIx(): number {
+        switch (this) {
+            case Color.Red: return 0;
+            case Color.Orange: return 1;
+            case Color.Yellow: return 2;
+            case Color.Green: return 3;
+            case Color.Blue: return 4;
+            case Color.Purple: return 5;
+            case Color.Black: return 6;
+            case Color.Grey1: return 7;
+            case Color.Grey2: return 8;
+            default: return 9;
+        }
+    }
+
+    static fromIx(ix: number): Color {
+        switch (ix) {
+            case 0: return Color.Red;
+            case 1: return Color.Orange;
+            case 2: return Color.Yellow;
+            case 3: return Color.Green;
+            case 4: return Color.Blue;
+            case 5: return Color.Purple;
+            case 6: return Color.Black;
+            case 7: return Color.Grey1;
+            case 8: return Color.Grey2;
+            default: return Color.White;
+        }
+    }
 }

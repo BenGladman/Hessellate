@@ -9,7 +9,7 @@ export default class Parameters {
     /**
      * The number of sides on a polygon.
      */
-    n: number = 6;
+    n: number = 5;
 
     /**
      * Vertex valence, the number of polygons that meet at each vertex.
@@ -29,10 +29,10 @@ export default class Parameters {
     detailLevel: number = 0.99;
 
     bgColor = Color.White;
-    diskColor = Color.MidGrey;
+    diskColor = Color.Grey2;
 
     outline = true;
-    outlineColor = Color.DarkGrey;
+    outlineColor = Color.Grey1;
 
     fill = true;
     fillColor = Color.Purple;
@@ -56,15 +56,14 @@ export default class Parameters {
     /**
      * Show or hide pattern.
      */
-    pattern = false;
+    pattern = true;
 
     patternDefn = [
-        [[0.1, 0.5], [0.9, 0.1], [0.9, 0.9]]
+        [[0.6, 0.5], [1, 0.1], [1, 0.9]]
     ];
 
     patternColors = [
-        Color.Orange,
-        Color.Yellow
+        Color.Grey1
     ];
 
     /**

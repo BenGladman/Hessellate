@@ -14,7 +14,7 @@ export default class Tile {
         this.center = center;
         this.mainPolygon = mainPolygon;
         this.innerPolygons = innerPolygons;
-        this.shadeLightness = (1 - center.norm());
+        this.shadeLightness = 30 * (1 - center.norm());
     }
 
     public getVertex(i: number): Point { return this.mainPolygon.getVertex(i); }
@@ -51,14 +51,14 @@ export default class Tile {
     }
 
     public fill(g: Graphics, color: Color): void {
-        this.mainPolygon.fill(g, color.shade(this.shadeLightness, 10));
+        this.mainPolygon.fill(g, color.shade(this.shadeLightness));
     }
 
     public fillInner(g: Graphics, colors: Color[]): void {
         if (this.innerPolygons && this.innerPolygons.length) {
             this.innerPolygons.forEach((polygon, i) => {
                 if (polygon) {
-                    const color = colors[i % colors.length].shade(1 - this.shadeLightness, 10);
+                    const color = colors[i % colors.length];
                     polygon.fill(g, color);
                 }
             });
