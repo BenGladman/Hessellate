@@ -222,7 +222,7 @@ export default class Disk {
         let y_center = this.g.y_center;
         let radius = Math.min(x_center, y_center);
         this.g.fillRect(0, 0, this.g.width, this.g.height, this.par.bgColor);
-        this.g.fillCircle(x_center, y_center, radius, this.par.diskColor);
+        this.g.fillCircle(x_center, y_center, radius, this.par.diskColor.shade(-5));
 
         const tile2s = this.P.map((tile) => tile.moebius(this.par.moebiusZ0, this.par.moebiusT, this.par.detailLevel));
 
