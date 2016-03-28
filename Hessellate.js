@@ -1199,6 +1199,7 @@ System.register("UiCanvas", ["Point"], function(exports_12, context_12) {
                     };
                     this.touchMove = function (ev) {
                         _this.pointerMove(ev);
+                        ev.preventDefault();
                     };
                     this.pointerMove = function (ev) {
                         if (_this.rotate) {
