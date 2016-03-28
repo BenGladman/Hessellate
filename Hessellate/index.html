@@ -11,7 +11,9 @@
 <body>
     <h1>Hessellate</h1>
     <h2>Hyperbolic Tessellations on the Poincaré Disk</h2>
+
     <canvas id="canvas" class="h-canvas" height="500" width="500"></canvas>
+
     <fieldset id="controls" class="h-controls">
         <fieldset class="h-row">
             <label class="h-label-left">Sides per polygon: </label>
@@ -38,7 +40,7 @@
         </fieldset>
 
         <fieldset class="h-row">
-            <label class="h-checkbox-label"><input type="checkbox" name="control-quasiregular" />Quasiregular</label>
+            <label class="h-checkbox-label h-label-left"><input type="checkbox" name="control-quasiregular" />Quasiregular</label>
         </fieldset>
 
         <fieldset class="h-row">
@@ -50,6 +52,7 @@
                 <label class="h-radio-label"><input type="radio" name="control-diskcolor" value="3" />Green</label>
                 <label class="h-radio-label"><input type="radio" name="control-diskcolor" value="4" />Blue</label>
                 <label class="h-radio-label"><input type="radio" name="control-diskcolor" value="5" />Purple</label>
+                <br />
                 <label class="h-radio-label"><input type="radio" name="control-diskcolor" value="6" />Black</label>
                 <label class="h-radio-label"><input type="radio" name="control-diskcolor" value="7" />Grey 1</label>
                 <label class="h-radio-label"><input type="radio" name="control-diskcolor" value="8" />Grey 2</label>
@@ -66,6 +69,7 @@
                 <label class="h-radio-label"><input type="radio" name="control-fillcolor" value="3" />Green</label>
                 <label class="h-radio-label"><input type="radio" name="control-fillcolor" value="4" />Blue</label>
                 <label class="h-radio-label"><input type="radio" name="control-fillcolor" value="5" />Purple</label>
+                <br />
                 <label class="h-radio-label"><input type="radio" name="control-fillcolor" value="6" />Black</label>
                 <label class="h-radio-label"><input type="radio" name="control-fillcolor" value="7" />Grey 1</label>
                 <label class="h-radio-label"><input type="radio" name="control-fillcolor" value="8" />Grey 2</label>
@@ -82,9 +86,10 @@
                 <label class="h-radio-label"><input type="radio" name="control-outlinecolor" value="3" />Green</label>
                 <label class="h-radio-label"><input type="radio" name="control-outlinecolor" value="4" />Blue</label>
                 <label class="h-radio-label"><input type="radio" name="control-outlinecolor" value="5" />Purple</label>
+                <br />
                 <label class="h-radio-label"><input type="radio" name="control-outlinecolor" value="6" />Black</label>
-                <label class="h-radio-label"><input type="radio" name="control-outlinecolor" value="7" />Gray 1</label>
-                <label class="h-radio-label"><input type="radio" name="control-outlinecolor" value="8" />Gray 2</label>
+                <label class="h-radio-label"><input type="radio" name="control-outlinecolor" value="7" />Grey 1</label>
+                <label class="h-radio-label"><input type="radio" name="control-outlinecolor" value="8" />Grey 2</label>
                 <label class="h-radio-label"><input type="radio" name="control-outlinecolor" value="9" />White</label>
             </fieldset>
         </fieldset>
@@ -98,14 +103,21 @@
                 <label class="h-radio-label"><input type="radio" name="control-patterncolor" value="3" />Green</label>
                 <label class="h-radio-label"><input type="radio" name="control-patterncolor" value="4" />Blue</label>
                 <label class="h-radio-label"><input type="radio" name="control-patterncolor" value="5" />Purple</label>
+                <br />
                 <label class="h-radio-label"><input type="radio" name="control-patterncolor" value="6" />Black</label>
-                <label class="h-radio-label"><input type="radio" name="control-patterncolor" value="7" />Gray 1</label>
-                <label class="h-radio-label"><input type="radio" name="control-patterncolor" value="8" />Gray 2</label>
+                <label class="h-radio-label"><input type="radio" name="control-patterncolor" value="7" />Grey 1</label>
+                <label class="h-radio-label"><input type="radio" name="control-patterncolor" value="8" />Grey 2</label>
                 <label class="h-radio-label"><input type="radio" name="control-patterncolor" value="9" />White</label>
             </fieldset>
         </fieldset>
 
     </fieldset>
+
+    <h2>Ben Gladman, 2016</h2>
+    <a href="http://aleph0.clarku.edu/~djoyce/poincare/PoincareB.html">Adapted from work by D. Joyce</a>
+    <br />
+    <a href="https://github.com/BenGladman/Hessellate">View source on GitHub</a>
+
     <script>
         System.import("App").then((app) => app.default.init());
     </script>

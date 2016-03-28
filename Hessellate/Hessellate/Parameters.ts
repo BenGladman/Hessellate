@@ -28,14 +28,14 @@ export default class Parameters {
      */
     detailLevel: number = 0.99;
 
-    bgColor = Color.White;
-    diskColor = Color.Grey2;
+    bgColor = Color.Black;
+    diskColor = Color.Red;
 
     outline = true;
-    outlineColor = Color.Grey1;
+    outlineColor = Color.Red;
 
     fill = true;
-    fillColor = Color.Purple;
+    fillColor = Color.Red;
     highlightTileColor = Color.White;
 
     /**
@@ -63,7 +63,7 @@ export default class Parameters {
     ];
 
     patternColors = [
-        Color.Grey1
+        Color.Red
     ];
 
     /**

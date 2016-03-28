@@ -1,12 +1,30 @@
 ﻿body {
+    background-color: rgb(26,26,26);
+    color: rgb(230,179,179);
     font-family: 'Segoe UI', sans-serif;
 }
 
+a {
+    color: rgb(132,132,189);
+}
+
+h1 {
+    color: rgb(208,113,113);
+}
+
+h2 {
+    color: rgb(197,79,79);
+}
+
 .h-canvas {
+    display: block;
+    margin: 4em auto;
 }
 
 .h-label-left {
     display: inline-block;
+    font-style: italic;
+    vertical-align: top;
     width: 12em;
 }
 
@@ -18,10 +36,10 @@
 
 .h-row {
     border: none;
-    padding: 0;
+    padding: 0 0 1em 0;
 }
 
-.h-group {    
+.h-group {
     border: none;
     display: inline-block;
     padding: 0;
@@ -29,6 +47,7 @@
 
 .h-radio-label {
     display: inline-block;
+    width: 5em;
 }
 
 .h-checkbox-label > input {

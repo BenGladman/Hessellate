@@ -14,7 +14,7 @@ export default class Tile {
         this.center = center;
         this.mainPolygon = mainPolygon;
         this.innerPolygons = innerPolygons;
-        this.shadeLightness = 30 * (1 - center.norm());
+        this.shadeLightness = 10 + 30 * (1 - center.norm());
     }
 
     public getVertex(i: number): Point { return this.mainPolygon.getVertex(i); }

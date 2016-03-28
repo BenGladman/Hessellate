@@ -14,7 +14,7 @@ export default class App {
 
         const d = new Disk(par, g);
 
-        UiCanvas.init(canvas, par, d);
+        new UiCanvas(canvas, par, d);
         UiControls.init(controls, par, d);
 
         d.init();

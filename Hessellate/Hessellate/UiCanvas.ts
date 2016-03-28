@@ -3,48 +3,98 @@ import Disk from "./Disk";
 import Point from "./Point";
 
 export default class UiCanvas {
-    static init = (c: HTMLCanvasElement, par: Parameters, disk: Disk) => {
-        let rotate = false;
-        let startPosition = Point.origin;
-        let startAngle = 0;
+    private rotate = false;
+    private startPosition = Point.origin;
+    private startAngle = 0;
+    private par: Parameters;
+    private canvas: HTMLCanvasElement;
+    private disk: Disk;
 
-        let eventPosition = function (ev: MouseEvent): Point {
-            let tx = (2 * ev.offsetX / c.width) - 1;
-            let ty = (2 * ev.offsetY / c.height) - 1;
-            return new Point(tx, ty);
-        }
-
-        let mousemoveHandler = function (ev: MouseEvent) {
-            if (ev.which !== 1) {
-                c.removeEventListener("mousemove", mousemoveHandler);
-                par.highlightCenter = false;
-                disk.update();
-                return;
-            }
-
-            if (rotate) {
-                par.moebiusT = eventPosition(ev).arg() - startAngle;
-            } else {
-                let newZ0 = eventPosition(ev).rotate(startAngle).minus(startPosition);
-                let r = newZ0.norm();
-                if (r > par.detailLevel) { newZ0 = Point.fromPolar(par.detailLevel, newZ0.arg()); }
-                par.moebiusZ0 = newZ0;
-            }
-            par.highlightCenter = true;
-            disk.update();
-        }
+    constructor(c: HTMLCanvasElement, par: Parameters, disk: Disk) {
+        this.canvas = c;
+        this.par = par;
+        this.disk = disk;
 
         c.addEventListener("mousedown", (ev) => {
-            let ep = eventPosition(ev);
-            if (ep.norm() > 1) {
-                rotate = true;
-                startAngle = ep.arg() - par.moebiusT;
-            } else {
-                rotate = false;
-                startAngle = Math.PI - par.moebiusT;
-                startPosition = ep.rotate(startAngle).minus(par.moebiusZ0);
-            }
-            c.addEventListener("mousemove", mousemoveHandler);
+            this.pointerStart(ev);
+            this.canvas.addEventListener("mousemove", this.mouseMove);
         });
+
+        c.addEventListener("touchstart", (ev) => {
+            this.pointerStart(ev);
+            this.canvas.addEventListener("touchmove", this.touchMove);
+            this.canvas.addEventListener("touchend", this.touchEnd);
+        });
+    }
+
+    private eventPosition = (ev: Event) => {
+        let ox = 0;
+        let oy = 0;
+
+        if (ev instanceof MouseEvent) {
+            ox = ev.offsetX;
+            oy = ev.offsetY;
+        } else if (ev instanceof TouchEvent) {
+            ox = ev.touches[0].pageX - this.canvas.offsetLeft;
+            oy = ev.touches[0].pageY - this.canvas.offsetTop;
+        }
+
+        let tx = (2 * ox / this.canvas.width) - 1;
+        let ty = (2 * oy / this.canvas.height) - 1;
+        return new Point(tx, ty);
+    }
+
+    private pointerStart = (ev: MouseEvent | TouchEvent) => {
+        let ep = this.eventPosition(ev);
+        if (ep.norm() > 1) {
+            this.rotate = true;
+            this.startAngle = ep.arg() - this.par.moebiusT;
+        } else {
+            this.rotate = false;
+            this.startAngle = Math.PI - this.par.moebiusT;
+            this.startPosition = ep.rotate(this.startAngle).minus(this.par.moebiusZ0);
+        }
+    }
+
+    private mouseMove = (ev: MouseEvent) => {
+        if (ev.which !== 1) {
+            this.mouseUp(ev);
+            return;
+        }
+
+        this.pointerMove(ev);
+    }
+
+    private touchMove = (ev: TouchEvent) => {
+        this.pointerMove(ev);
+    }
+
+    private pointerMove = (ev: Event) => {
+        if (this.rotate) {
+            this.par.moebiusT = this.eventPosition(ev).arg() - this.startAngle;
+        } else {
+            let newZ0 = this.eventPosition(ev).rotate(this.startAngle).minus(this.startPosition);
+            let r = newZ0.norm();
+            if (r > this.par.detailLevel) { newZ0 = Point.fromPolar(this.par.detailLevel, newZ0.arg()); }
+            this.par.moebiusZ0 = newZ0;
+        }
+        this.par.highlightCenter = true;
+        this.disk.update();
+    }
+
+    private mouseUp = (ev: MouseEvent) => {
+        this.canvas.removeEventListener("mousemove", this.mouseMove);
+        this.pointerEnd(ev);
+    }
+
+    private touchEnd = (ev: TouchEvent) => {
+        this.canvas.removeEventListener("touchmove", this.touchMove);
+        this.canvas.removeEventListener("touchend", this.touchEnd);
+        this.pointerEnd(ev);
+    }
+
+    private pointerEnd = (ev: Event) => {
+        this.par.highlightCenter = false;
+        this.disk.update();
     }
 }

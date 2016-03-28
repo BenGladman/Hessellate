@@ -49,11 +49,11 @@
         );
     }
 
-    static Red = new Color(0, 50, 60);
-    static Orange = new Color(30, 50, 60);
-    static Yellow = new Color(60, 50, 80);
-    static Green = new Color(120, 30, 60);
-    static Blue = new Color(240, 30, 60);
+    static Red = new Color(0, 50, 40);
+    static Orange = new Color(30, 50, 40);
+    static Yellow = new Color(60, 50, 60);
+    static Green = new Color(120, 30, 40);
+    static Blue = new Color(240, 30, 40);
     static Purple = new Color(313, 50, 60);
     static Black = new Color(0, 0, 10);
     static Grey1 = new Color(0, 0, 30);
