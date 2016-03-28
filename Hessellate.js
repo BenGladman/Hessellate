@@ -1217,6 +1217,7 @@ System.register("UiCanvas", ["Point"], function(exports_12, context_12) {
                     };
                     this.mouseUp = function (ev) {
                         _this.canvas.removeEventListener("mousemove", _this.mouseMove);
+                        _this.canvas.removeEventListener("mouseup", _this.mouseUp);
                         _this.pointerEnd(ev);
                     };
                     this.touchEnd = function (ev) {
@@ -1234,6 +1235,7 @@ System.register("UiCanvas", ["Point"], function(exports_12, context_12) {
                     c.addEventListener("mousedown", function (ev) {
                         _this.pointerStart(ev);
                         _this.canvas.addEventListener("mousemove", _this.mouseMove);
+                        _this.canvas.addEventListener("mouseup", _this.mouseUp);
                     });
                     c.addEventListener("touchstart", function (ev) {
                         _this.pointerStart(ev);
