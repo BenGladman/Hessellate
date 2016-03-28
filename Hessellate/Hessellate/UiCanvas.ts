@@ -18,6 +18,7 @@ export default class UiCanvas {
         c.addEventListener("mousedown", (ev) => {
             this.pointerStart(ev);
             this.canvas.addEventListener("mousemove", this.mouseMove);
+            this.canvas.addEventListener("mouseup", this.mouseUp);
         });
 
         c.addEventListener("touchstart", (ev) => {
@@ -84,6 +85,7 @@ export default class UiCanvas {
 
     private mouseUp = (ev: MouseEvent) => {
         this.canvas.removeEventListener("mousemove", this.mouseMove);
+        this.canvas.removeEventListener("mouseup", this.mouseUp);
         this.pointerEnd(ev);
     }
 
