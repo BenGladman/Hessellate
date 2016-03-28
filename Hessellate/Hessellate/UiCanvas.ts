@@ -68,6 +68,7 @@ export default class UiCanvas {
 
     private touchMove = (ev: TouchEvent) => {
         this.pointerMove(ev);
+        ev.preventDefault();
     }
 
     private pointerMove = (ev: Event) => {
