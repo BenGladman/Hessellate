@@ -1,7 +1,16 @@
-﻿body {
+﻿html {
+    background-color: rgb(20,20,20);
+}
+
+body {
     background-color: rgb(26,26,26);
+    box-sizing: border-box;
     color: rgb(230,179,179);
     font-family: 'Segoe UI', sans-serif;
+    margin: 0 auto;
+    max-width: 60em;
+    min-height: 100vh;
+    padding: 2em;
 }
 
 a {
