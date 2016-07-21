@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+		"target": "es6",
+		"module": "none",
+		"moduleResolution": "node",
+		"jsx": "preserve",
+		"noImplicitAny": true,
+		"sourceMap": true,
+		"noEmitOnError": false,
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitReturns": true
+	},
+	"exclude": [
+		"node_modules"
+	]
+}

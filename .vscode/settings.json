@@ -1,0 +1,11 @@
+{
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.DS_Store": true,
+        "xxdist": true,
+        "node_modules": true
+    },
+    "css.validate": false,
+    "stylelint.enable": true
+}
