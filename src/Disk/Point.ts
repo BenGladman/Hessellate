@@ -24,7 +24,7 @@ export default class Point {
      * @param t Argument (angle)
      */
     static fromPolar(r: number, t: number) {
-        return new Point(r * Math.cos(t), r * Math.sin(t))
+        return new Point(r * Math.cos(t), r * Math.sin(t));
     }
 
     /**

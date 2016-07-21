@@ -18,7 +18,7 @@
      * CSS color string
      */
     get css(): string {
-        var css = `hsl(${this.h},${this.s}%,${this.l}%)`;
+        const css = `hsl(${this.h},${this.s}%,${this.l}%)`;
         return css;
     }
 

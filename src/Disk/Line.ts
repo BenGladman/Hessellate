@@ -185,13 +185,13 @@ export default class Line {
         let radius = Math.min(x_center, y_center);
         let x = Math.round(this.A.x * radius + x_center);
         let y = Math.round(this.A.y * radius + y_center);
-        if ((list == null || x != list.x || y != list.y)
+        if ((list == null || x !== list.x || y !== list.y)
             && !isNaN(x) && !isNaN(y))
             list = new ScreenCoordinateList(list, x, y);
         if (this.isStraight) { // go directly to terminal point B
             x = Math.round(this.B.x * radius + x_center);
             y = Math.round(this.B.y * radius + y_center);
-            if (x != list.x || y != list.y)
+            if (x !== list.x || y !== list.y)
                 list = new ScreenCoordinateList(list, x, y);
         } else { // its an arc of a circle
             // determine starting and ending angles
@@ -210,9 +210,9 @@ export default class Line {
     }
 
     public draw(g: Graphics): void {
-        let x_center = g.x_center;
-        let y_center = g.y_center;
-        let radius = Math.min(x_center, y_center);
+        // let x_center = g.x_center;
+        // let y_center = g.y_center;
+        // let radius = Math.min(x_center, y_center);
         // *** yet to write ***
     }
 

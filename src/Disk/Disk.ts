@@ -76,7 +76,7 @@ export default class Disk {
         let b = this.par.n;        // tiles in first layer joined by an edge
         let next_a: number;
         let next_b: number;
-        if (this.par.k == 3) {
+        if (this.par.k === 3) {
             for (let l = 1; l <= layer; ++l) {
                 this.innerTiles = this.totalTiles;
                 next_a = a + b;
@@ -119,24 +119,24 @@ export default class Disk {
 
     private applyRule(i: number, j: number): number {
         let r = this.rule[i];
-        let special = (r == 1);
+        let special = (r === 1);
         if (special) { r = 2; }
-        let start = (r == 4) ? 3 : 2;
-        let quantity = (this.par.k == 3 && r != 0) ? this.par.n - r - 1 : this.par.n - r;
+        let start = (r === 4) ? 3 : 2;
+        let quantity = (this.par.k === 3 && r !== 0) ? this.par.n - r - 1 : this.par.n - r;
         for (let s = start; s < start + quantity; ++s) {
             // Create a tile adjacent to P[i]
             this.P[j] = this.createNextTile(this.P[i], s % this.par.n);
-            this.rule[j] = (this.par.k == 3 && s == start && r != 0) ? 4 : 3;
+            this.rule[j] = (this.par.k === 3 && s === start && r !== 0) ? 4 : 3;
             j++;
 
             let m = 0;
             if (special) { m = 2; }
-            else if (s == 2 && r != 0) { m = 1; }
+            else if (s === 2 && r !== 0) { m = 1; }
 
             for (; m < this.par.k - 3; ++m) {
                 // Create a tile adjacent to P[j-1]
                 this.P[j] = this.createNextTile(this.P[j - 1], 1);
-                this.rule[j] = (this.par.n == 3 && m == this.par.k - 4) ? 1 : 2;
+                this.rule[j] = (this.par.n === 3 && m === this.par.k - 4) ? 1 : 2;
                 j++;
             }
         }
@@ -174,10 +174,10 @@ export default class Disk {
         const innerPolygons: Polygon[] = [];
 
         for (s = 1; s < this.par.n + 1; s += this.par.patternRepeat) {
-            var v0arg = mainPolygon.getVertex(s).arg();
-            var v1arg = mainPolygon.getVertex(s + 1).arg();
+            const v0arg = mainPolygon.getVertex(s).arg();
+            let v1arg = mainPolygon.getVertex(s + 1).arg();
             if (v1arg < v0arg) { v1arg += 2 * Math.PI; }
-            var arc = v1arg - v0arg;
+            const arc = v1arg - v0arg;
 
             this.par.patternDefn.forEach((ppoly) => {
                 innerPolygons.push(new Polygon(ppoly.map((pvert, i) => {
@@ -186,7 +186,7 @@ export default class Disk {
 
                     const side = pvert[1] < 0 ? mainPolygon.getEdge(s - 1)
                         : pvert[1] <= 1 ? mainPolygon.getEdge(s)
-                            : mainPolygon.getEdge(s + 1)
+                            : mainPolygon.getEdge(s + 1);
 
                     const raysideintersection = side.intersection(ray);
                     if (raysideintersection[0]) {
@@ -195,7 +195,7 @@ export default class Disk {
                     } else {
                         return Point.origin;
                     }
-                })))
+                })));
             });
         }
 

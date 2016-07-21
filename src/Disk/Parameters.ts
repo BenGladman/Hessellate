@@ -78,15 +78,15 @@ export default class Parameters {
         this.n = Math.min(this.n, 20);
 
         // k should be large enough, but no larger than 20
-        if (this.n == 3) { this.k = Math.max(this.k, 7); }
-        else if (this.n == 4) { this.k = Math.max(this.k, 5); }
+        if (this.n === 3) { this.k = Math.max(this.k, 7); }
+        else if (this.n === 4) { this.k = Math.max(this.k, 5); }
         else if (this.n < 7) { this.k = Math.max(this.k, 4); }
         else { this.k = Math.max(this.k, 3); }
 
         this.k = Math.min(this.k, 20);
 
         // layers shouldn't be too big
-        if (this.n == 3 || this.k == 3) {
+        if (this.n === 3 || this.k === 3) {
             this.layers = Math.min(this.layers, 5);
         } else {
             this.layers = Math.min(this.layers, 4);

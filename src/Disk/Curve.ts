@@ -60,12 +60,12 @@ abstract class Curve {
         for (let i = 0; i < 5; ++i) {
             let t = bendpoints[i];
             let result = this.bent(a, b, t * a + (1.0 - t) * b, list);
-            if (result != list) return result;
+            if (result !== list) return result;
         }
         // it's a straight line
         let b1 = this.xScreen(b);
         let b2 = this.yScreen(b);
-        if ((list.x != b1 || list.y != b2) && !isNaN(b1) && !isNaN(b2)) {
+        if ((list.x !== b1 || list.y !== b2) && !isNaN(b1) && !isNaN(b2)) {
             list = new ScreenCoordinateList(list, b1, b2);
         }
         return list; // it's a straight line
