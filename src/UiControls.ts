@@ -1,6 +1,6 @@
-﻿import Disk from "./Disk/Disk";
-import Color from "./Disk/Color";
-import Parameters from "./Disk/Parameters";
+﻿import Disk from "./draw/Disk";
+import Color from "./draw/Color";
+import Parameters from "./draw/Parameters";
 
 export default class UiControls {
     static init(controls: HTMLFieldSetElement, par: Parameters, disk: Disk): void {

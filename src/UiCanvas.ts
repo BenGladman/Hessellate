@@ -1,6 +1,6 @@
-﻿import Parameters from "./Disk/Parameters";
-import Disk from "./Disk/Disk";
-import Point from "./Disk/Point";
+﻿import Parameters from "./draw/Parameters";
+import Disk from "./draw/Disk";
+import Point from "./draw/Point";
 
 export default class UiCanvas {
     private rotate = false;

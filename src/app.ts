@@ -1,6 +1,6 @@
-﻿import Disk from "./Disk/Disk";
-import Graphics from "./Disk/Graphics";
-import Parameters from "./Disk/Parameters";
+﻿import Disk from "./draw/Disk";
+import Graphics from "./draw/Graphics";
+import Parameters from "./draw/Parameters";
 import UiCanvas from "./UiCanvas";
 import UiControls from "./UiControls";
 import "./app.css";
