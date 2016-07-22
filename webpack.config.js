@@ -12,6 +12,14 @@ const tsloaders = [
     "ts-loader"
 ];
 
+const tsxloaders = [
+    "babel-loader?" + JSON.stringify({
+        plugins: ["transform-runtime"],
+        presets: ["es2015", "react"]
+    }),
+    "ts-loader"
+];
+
 module.exports = {
     entry: ["./src/app"],
     output: {
@@ -35,6 +43,11 @@ module.exports = {
                 include: [srcPath]
             },
             {
+                test: /\.tsx$/,
+                loaders: tsxloaders,
+                include: [srcPath]
+            },
+            {
                 test: /\.css$/,
                 loader: ExtractTextPlugin.extract("style-loader", "css-loader?sourceMap"),
                 include: [srcPath]
@@ -46,6 +59,11 @@ module.exports = {
         // This plugin moves all the CSS into a separate stylesheet
         new ExtractTextPlugin("Hessellate.css")
     ],
+
+    externals: {
+        "react": "React",
+        "react-dom": "ReactDOM"
+    },
 
     debug: true,
     watch: false
