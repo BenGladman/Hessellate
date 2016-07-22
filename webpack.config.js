@@ -60,11 +60,6 @@ module.exports = {
         new ExtractTextPlugin("Hessellate.css")
     ],
 
-    externals: {
-        "react": "React",
-        "react-dom": "ReactDOM"
-    },
-
     debug: true,
     watch: false
 };
