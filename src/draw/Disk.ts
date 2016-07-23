@@ -55,8 +55,12 @@ export default class Disk {
      */
     private g: Graphics;
 
-    constructor(par: Parameters, g: Graphics) {
+    public setParameters(par: Parameters) {
+        par.checkPars();
         this.par = par;
+    }
+
+    public setGraphics(g: Graphics) {
         this.g = g;
     }
 
