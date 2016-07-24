@@ -1,38 +1,41 @@
 import * as React from "react";
-import Disk from "../draw/Disk";
+import { State, initialiseStore } from "../store";
 import Graphics from "../draw/Graphics";
-import Parameters from "../draw/Parameters";
+import { generate, GenerateParameters } from "../draw/generate";
+import { RenderParameters } from "../draw/render";
+import render from "../actions/render";
 
 interface Props {
-}
-
-interface State {
-    par: Parameters;
-    disk: Disk;
+    gpars?: GenerateParameters;
+    rpars?: RenderParameters;
 }
 
 export default class Hessellate extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
 
-        const par = new Parameters();
-        const disk = new Disk();
-        disk.setParameters(par);
+        this.state = {};
+        Object.assign(this.state, props.gpars, props.rpars);
 
-        this.state = {
-            par,
-            disk,
-        };
+        this.state.tiles = generate(props.gpars);
+
+        initialiseStore(
+            () => this.state,
+            (state) => this.setState(state)
+        );
+    }
+
+    private g: Graphics;
+
+    componentDidMount() {
+        console.log("Hessellate component did mount");
+        render(this.g);
     }
 
     render() {
         const canvasInit = (canvas: HTMLCanvasElement) => {
             if (canvas) {
-                const g = new Graphics(canvas);
-                const d = this.state.disk;
-                d.setGraphics(g);
-                d.init();
-                d.update();
+                this.g = new Graphics(canvas);
             }
         };
 
